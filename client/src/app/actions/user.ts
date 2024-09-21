@@ -1,19 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { decrypt } from "@/app/lib/session";
+import { getSession } from "@/app/lib/session";
 
 export async function getUser() {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const session = await getSession();
 
-  if (!accessToken) {
-    return null;
-  }
-
-  const token = await decrypt(accessToken);
-
-  if (!token) {
+  if (!session) {
     return null;
   }
 
@@ -21,7 +13,7 @@ export async function getUser() {
   const response = await fetch("http://localhost:4001/api/user", {
     method: "GET",
     headers: {
-      Authorization: token as string,
+      Authorization: session.token,
     },
   });
 

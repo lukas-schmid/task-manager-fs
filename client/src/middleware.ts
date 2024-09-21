@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { decrypt } from "./app/lib/session";
+import { decryptSession } from "./app/lib/session";
 
 const protectedRoutes = ["/boards"];
 const publicRoutes = ["/login", "/register", "/"];
@@ -10,8 +10,7 @@ export default async function middleware(req: NextRequest) {
   const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
 
-  const cookie = cookies().get("accessToken")?.value;
-  const jwtToken = await decrypt(cookie);
+  const jwtToken = await decryptSession("accessToken");
 
   // Redirect to home if user is not authenticated
   if (isProtectedRoute && !jwtToken) {

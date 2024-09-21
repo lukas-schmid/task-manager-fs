@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const SessionPayload = z.object({
+  id: z.string(),
+  token: z.string(),
+});
+
+export type SessionPayload = z.infer<typeof SessionPayload>;
+
 export const SignupFormSchema = z.object({
   username: z
     .string()
@@ -17,14 +24,20 @@ export const SignupFormSchema = z.object({
     .trim(),
 });
 
-export type FormState =
+export type FormAuthState =
   | {
-      errors?: {
-        name?: string[];
+      validationErrors?: {
+        username?: string[];
         email?: string[];
         password?: string[];
       };
-      message?: string;
-      messages?: string[];
+      apiErrors?: {
+        messages: string[];
+      };
     }
+  | undefined;
+
+export type FormBoardState =
+  | { status: "error"; message: string }
+  | { status: "success"; message: string }
   | undefined;

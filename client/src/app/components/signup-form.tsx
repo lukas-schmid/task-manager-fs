@@ -19,7 +19,7 @@ export function RegisterForm() {
         name="email"
         label="Email"
         placeholder="Email"
-        error={state?.errors?.email}
+        error={state?.validationErrors?.email}
       />
       <Input
         id="username"
@@ -27,7 +27,7 @@ export function RegisterForm() {
         name="username"
         label="Username"
         placeholder="Username"
-        error={state?.errors?.username}
+        error={state?.validationErrors?.username}
       />
       <Input
         id="password"
@@ -36,11 +36,11 @@ export function RegisterForm() {
         label="Password"
         placeholder="Password"
         error={
-          state?.errors?.password && (
+          state?.validationErrors?.password && (
             <div>
               <p className="text-red-600">Password must:</p>
               <ul>
-                {state.errors.password.map((error) => (
+                {state.validationErrors?.password.map((error) => (
                   <li key={error}>- {error}</li>
                 ))}
               </ul>

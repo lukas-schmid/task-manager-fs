@@ -5,5 +5,9 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Card = ({ children, ...rest }: PropsWithChildren<CardProps>) => {
   const className = twMerge("p-6 bg-card rounded", rest.className);
-  return <div className={className}>{children}</div>;
+  return (
+    <div {...rest} className={className}>
+      {children}
+    </div>
+  );
 };

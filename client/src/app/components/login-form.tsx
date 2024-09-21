@@ -11,9 +11,9 @@ export function LoginForm() {
 
   return (
     <form className="flex flex-col gap-4" action={action}>
-      {state?.messages &&
-        state?.messages.length > 0 &&
-        state?.messages.map((message, index) => {
+      {state?.apiErrors?.messages &&
+        state?.apiErrors?.messages.length > 0 &&
+        state?.apiErrors?.messages.map((message, index) => {
           return (
             <div
               className="px-1 rounded-sm text-sm text-red-800 bg-red-300"

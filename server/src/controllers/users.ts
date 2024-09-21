@@ -13,7 +13,7 @@ const normalizeUser = (user: UserDocument, includeToken: boolean = false) => {
     email: user.email,
     username: user.username,
     id: user.id,
-    ...(includeToken && { token }),
+    ...(includeToken && { token: `Bearer ${token}` }),
   };
 };
 

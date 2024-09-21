@@ -1,12 +1,15 @@
 "use server";
 
-import { SignupFormSchema, FormState } from "@/app/lib/definitions";
+import { SignupFormSchema, FormAuthState } from "@/app/lib/definitions";
 import { ErrorCodes } from "../types/errorCodes.enum";
 import { AuthError, AuthSuccess } from "../types/auth.interface";
 import { createSession, deleteSession } from "../lib/session";
 import { redirect } from "next/navigation";
 
-export async function register(state: FormState, formData: FormData) {
+export async function register(
+  state: FormAuthState,
+  formData: FormData,
+): Promise<FormAuthState | undefined> {
   const validatedFields = SignupFormSchema.safeParse({
     username: formData.get("username"),
     email: formData.get("email"),
@@ -15,7 +18,7 @@ export async function register(state: FormState, formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      validationErrors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
@@ -40,28 +43,38 @@ export async function register(state: FormState, formData: FormData) {
         case ErrorCodes.userAlreadyExists:
         case ErrorCodes.validationError:
           return {
-            messages: errorData.errors,
+            apiErrors: {
+              messages: errorData.errors,
+            },
           };
         default:
           return {
-            messages: ["An unknown error occured. Couldn't sign up"],
+            apiErrors: {
+              messages: ["An unknown error occured. Couldn't sign up"],
+            },
           };
       }
     }
 
     const user: AuthSuccess = await response.json();
-    const token = user.token;
-    await createSession(token);
+
+    const { id, token } = user;
+    await createSession({ id, token });
   } catch (err) {
     console.error(err);
     return {
-      messages: ["An unknown error occured. Couldn't sign up"],
+      apiErrors: {
+        messages: ["An unknown error occured. Couldn't sign up"],
+      },
     };
   }
   redirect("/boards");
 }
 
-export async function login(state: FormState, formData: FormData) {
+export async function login(
+  state: FormAuthState,
+  formData: FormData,
+): Promise<FormAuthState | undefined> {
   const formFields = {
     email: formData.get("email"),
     password: formData.get("password"),
@@ -86,22 +99,28 @@ export async function login(state: FormState, formData: FormData) {
       switch (errorData.code) {
         case ErrorCodes.incorrectCredentials:
           return {
-            messages: errorData.errors,
+            apiErrors: {
+              messages: errorData.errors,
+            },
           };
         default:
           return {
-            messages: ["An unknown error occured. Couldn't login"],
+            apiErrors: {
+              messages: ["An unknown error occured. Couldn't login"],
+            },
           };
       }
     }
 
     const user: AuthSuccess = await response.json();
-    const token = user.token;
-    await createSession(token);
+    const { id, token } = user;
+    await createSession({ id, token });
   } catch (err) {
     console.error(err);
     return {
-      messages: ["An unknown error occured. Couldn't sign up"],
+      apiErrors: {
+        messages: ["An unknown error occured. Couldn't sign up"],
+      },
     };
   }
   redirect("/boards");

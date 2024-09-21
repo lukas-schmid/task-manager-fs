@@ -12,7 +12,7 @@ export default function Home() {
           <Button className="h-8">Register</Button>
         </Link>
       </nav>
-      <main>Some blog articles with images</main>
+      <main className="p-2">Some blog articles with images</main>
     </div>
   );
 }

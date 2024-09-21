@@ -1,9 +1,9 @@
 "use client";
 
-import { Column as ColumnInterface } from "../types/column.interface";
-import { Task } from "../types/task.interface";
-import { Column } from "./column";
-import { CreateColumn } from "./create-column";
+import { Column as ColumnInterface } from "@/types/column.interface";
+import { Task } from "@/types/task.interface";
+import { Column } from "@/components/column";
+import { CreateColumn } from "@/components/create-column";
 
 interface BoardContentProps {
   columns: ColumnInterface[] | null;

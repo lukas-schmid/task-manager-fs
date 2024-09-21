@@ -7,11 +7,10 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
-import { SocketEventsEnum } from "../types/socketEvents.enum";
-import { useBoard } from "./BoardProvider";
+import { SocketEventsEnum } from "@/types/socketEvents.enum";
+import { useBoard } from "@/context/BoardProvider";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -36,6 +35,30 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   const { updateBoard: updateBoardContext } = useBoard();
   const socket = useRef<Socket | null>(null);
 
+  const updateBoard = useCallback(
+    (title: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.boardsUpdate, {
+          boardId,
+          fields: { title },
+        });
+      }
+    },
+    [boardId],
+  );
+
+  const joinBoard = useCallback((boardId: string) => {
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsJoin, { boardId });
+    }
+  }, []);
+
+  const leaveBoard = useCallback((boardId: string) => {
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsLeave, { boardId });
+    }
+  }, []);
+
   useEffect(() => {
     if (boardId) {
       const newSocket = io("http://localhost:4001", {
@@ -52,8 +75,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       });
 
       newSocket.on(SocketEventsEnum.boardsUpdateSuccess, (updatedBoardData) => {
-        console.log("Received updated board data:", updatedBoardData);
-        updateBoardContext(updatedBoardData); // Update state with the new board data
+        updateBoardContext(updatedBoardData);
       });
 
       return () => {
@@ -64,28 +86,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         }
       };
     }
-  }, []);
-
-  const updateBoard = (title: string) => {
-    if (socket.current !== null) {
-      socket.current.emit(SocketEventsEnum.boardsUpdate, {
-        boardId,
-        fields: { title },
-      });
-    }
-  };
-
-  const joinBoard = (boardId: string) => {
-    if (socket.current) {
-      socket.current.emit(SocketEventsEnum.boardsJoin, { boardId });
-    }
-  };
-
-  const leaveBoard = (boardId: string) => {
-    if (socket.current) {
-      socket.current.emit(SocketEventsEnum.boardsLeave, { boardId });
-    }
-  };
+  }, [boardId, token, updateBoardContext, joinBoard, leaveBoard]);
 
   const value = useMemo(
     () => ({

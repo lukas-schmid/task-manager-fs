@@ -1,5 +1,5 @@
-import { Column as ColumnInterface } from "../types/column.interface";
-import { Task as TaskInterface } from "../types/task.interface";
+import { Column as ColumnInterface } from "@/types/column.interface";
+import { Task as TaskInterface } from "@/types/task.interface";
 import { Task } from "./task";
 
 interface ColumnProps {

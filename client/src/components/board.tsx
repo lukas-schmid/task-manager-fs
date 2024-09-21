@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Board as BoardInterface } from "../types/board.interface";
-import { Card } from "./card";
+import { Board as BoardInterface } from "@/types/board.interface";
+import { Card } from "@/components/card";
 
 interface BoardProps {
   board: BoardInterface;

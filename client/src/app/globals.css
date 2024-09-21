@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 :root {
-  /*--background: #ffffff;*/
-  /*--foreground: #171717;*/
-  /*--background: #0a0a0a;*/
-  /*--foreground: #ededed;*/
-
   --gradient: linear-gradient(to top left, #1488cc, #2b32b2);
 
   --background: hsl(215 53.3% 3.52%);
@@ -39,13 +34,6 @@
 
   --ring: hsl(215 82% 44%);
 }
-
-/*@media (prefers-color-scheme: dark) {*/
-/*  :root {*/
-/*    --background: #0a0a0a;*/
-/*    --foreground: #ededed;*/
-/*  }*/
-/*}*/
 
 body {
   color: var(--foreground);

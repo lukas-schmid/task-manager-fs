@@ -1,24 +1,25 @@
 "use client";
 
 import { Pencil } from "lucide-react";
-import { InlineForm } from "./inline-form";
+import { InlineForm } from "@/components/inline-form";
 import { useCallback, useState } from "react";
-import { useBoard } from "../context/BoardProvider";
-import { useSocket } from "../context/SocketProvider";
+import { useBoard } from "@/context/BoardProvider";
+import { useSocket } from "@/context/SocketProvider";
 
-interface BoardHeaderTitleProps {}
-
-export const BoardHeaderTitle = ({}: BoardHeaderTitleProps) => {
+export const BoardHeaderTitle = () => {
   const { board } = useBoard();
   const { updateBoard } = useSocket();
   const [isEditing, setIsEditing] = useState(false);
 
   console.log("boardTitle", board);
-  const updateBoardTitle = useCallback((payload: FormData) => {
-    const title = payload.get("title") as string;
-    updateBoard(title);
-    setIsEditing(false);
-  }, []);
+  const updateBoardTitle = useCallback(
+    (payload: FormData) => {
+      const title = payload.get("title") as string;
+      updateBoard(title);
+      setIsEditing(false);
+    },
+    [updateBoard],
+  );
 
   const handleClick = useCallback(() => {
     setIsEditing(true);

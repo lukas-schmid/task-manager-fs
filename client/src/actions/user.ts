@@ -1,6 +1,6 @@
 "use server";
 
-import { getSession } from "@/app/lib/session";
+import { getSession } from "@/lib/session";
 
 export async function getUser() {
   const session = await getSession();

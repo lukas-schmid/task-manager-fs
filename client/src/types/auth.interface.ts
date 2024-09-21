@@ -1,4 +1,4 @@
-import { ErrorCodes } from "./errorCodes.enum";
+import { ErrorCodes } from "@/types/errorCodes.enum";
 
 export interface AuthError {
   message: string;

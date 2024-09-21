@@ -1,8 +1,8 @@
 "use server";
 
-import { getSession } from "@/app/lib/session";
-import { Board } from "../types/board.interface";
-import { FormBoardState } from "../lib/definitions";
+import { getSession } from "@/lib/session";
+import { Board } from "@/types/board.interface";
+import { FormBoardState } from "@/lib/definitions";
 import { revalidatePath } from "next/cache";
 
 export async function getBoards(): Promise<Board[] | null> {

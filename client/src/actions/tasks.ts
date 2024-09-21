@@ -1,7 +1,7 @@
 "use server";
 
-import { getSession } from "@/app/lib/session";
-import { Task } from "../types/task.interface";
+import { getSession } from "@/lib/session";
+import { Task } from "@/types/task.interface";
 
 export async function getTasks(boardId: string): Promise<Task[] | null> {
   const session = await getSession();

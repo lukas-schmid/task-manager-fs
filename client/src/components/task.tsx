@@ -1,5 +1,5 @@
-import { Task as TaskInterface } from "../types/task.interface";
-import { Card } from "./card";
+import { Task as TaskInterface } from "@/types/task.interface";
+import { Card } from "@/components/card";
 
 interface TaskProps {
   task: TaskInterface;

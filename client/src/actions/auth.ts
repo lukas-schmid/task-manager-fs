@@ -1,9 +1,9 @@
 "use server";
 
-import { SignupFormSchema, FormAuthState } from "@/app/lib/definitions";
-import { ErrorCodes } from "../types/errorCodes.enum";
-import { AuthError, AuthSuccess } from "../types/auth.interface";
-import { createSession, deleteSession } from "../lib/session";
+import { SignupFormSchema, FormAuthState } from "@/lib/definitions";
+import { ErrorCodes } from "@/types/errorCodes.enum";
+import { AuthError, AuthSuccess } from "@/types/auth.interface";
+import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export async function register(

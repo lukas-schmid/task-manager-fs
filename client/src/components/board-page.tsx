@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { SocketProvider } from "../context/SocketProvider";
-import { Column as ColumnInterface } from "../types/column.interface";
-import { Task } from "../types/task.interface";
-import { Board } from "../types/board.interface";
-import { BoardContent } from "./board-content";
+import { SocketProvider } from "@/context/SocketProvider";
+import { Column as ColumnInterface } from "@/types/column.interface";
+import { Task } from "@/types/task.interface";
+import { Board } from "@/types/board.interface";
+import { BoardContent } from "@/components/board-content";
 import { ArrowLeft } from "lucide-react";
-import { BoardHeaderTitle } from "./board-header-title";
-import { BoardProvider } from "../context/BoardProvider";
+import { BoardHeaderTitle } from "@/components/board-header-title";
+import { BoardProvider } from "@/context/BoardProvider";
 
 interface BoardPageProps {
   board: Board | null;

@@ -7,13 +7,13 @@ import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { ErrorCodes } from "../types/errorCodes.enum";
 
-const normalizeUser = (user: UserDocument) => {
+const normalizeUser = (user: UserDocument, includeToken: boolean = false) => {
   const token = jwt.sign({ id: user.id, email: user.email }, secret);
   return {
     email: user.email,
     username: user.username,
     id: user.id,
-    token: `Bearer ${token}`,
+    ...(includeToken && { token }),
   };
 };
 
@@ -38,7 +38,7 @@ export const register = async (
       password: req.body.password,
     });
     const savedUser = await newUser.save();
-    res.send(normalizeUser(savedUser));
+    res.send(normalizeUser(savedUser, true));
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);
@@ -78,7 +78,7 @@ export const login = async (
       res.status(422).json(invalidCredentialsErrorResponse);
     }
 
-    res.send(normalizeUser(user));
+    res.send(normalizeUser(user, true));
   } catch (err) {
     next(err);
   }

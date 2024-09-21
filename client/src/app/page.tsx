@@ -5,12 +5,12 @@ export default function Home() {
   return (
     <div>
       <nav className="flex items-center justify-end h-16 px-4 gap-3 bg-muted">
-        <Button className="h-8 bg-transparent">
-          <Link href="/login">Login</Link>
-        </Button>
-        <Button className="h-8">
-          <Link href="/register">Register</Link>
-        </Button>
+        <Link href="/login">
+          <Button className="h-8 bg-transparent">Login</Button>
+        </Link>
+        <Link href="/register">
+          <Button className="h-8">Register</Button>
+        </Link>
       </nav>
       <main>Some blog articles with images</main>
     </div>

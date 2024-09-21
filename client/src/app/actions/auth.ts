@@ -58,6 +58,7 @@ export async function register(state: FormState, formData: FormData) {
       messages: ["An unknown error occured. Couldn't sign up"],
     };
   }
+  redirect("/boards");
 }
 
 export async function login(state: FormState, formData: FormData) {
@@ -103,6 +104,7 @@ export async function login(state: FormState, formData: FormData) {
       messages: ["An unknown error occured. Couldn't sign up"],
     };
   }
+  redirect("/boards");
 }
 
 export async function logout() {

@@ -38,7 +38,7 @@ export const register = async (
       password: req.body.password,
     });
     const savedUser = await newUser.save();
-    res.send(normalizeUser(savedUser, true));
+    return res.send(normalizeUser(savedUser, true));
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);

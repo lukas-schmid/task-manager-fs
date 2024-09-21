@@ -2,18 +2,22 @@
 
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { SocketEventsEnum } from "../types/socketEvents.enum";
+import { useBoard } from "./BoardProvider";
 
 interface SocketContextType {
   socket: Socket | null;
-  joinBoard: (boardId: string) => void;
-  leaveBoard: (boardId: string) => void;
+  joinBoard(boardId: string): void;
+  leaveBoard(boardId: string): void;
+  updateBoard(title: string): void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -29,50 +33,68 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   boardId,
   children,
 }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { updateBoard: updateBoardContext } = useBoard();
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (socket && boardId) {
-      joinBoard(boardId);
-      return () => {
-        leaveBoard(boardId);
-      };
-    }
-  }, [socket, boardId]);
-
-  useEffect(() => {
-    if (token) {
+    if (boardId) {
       const newSocket = io("http://localhost:4001", {
         auth: { token },
       });
 
-      setSocket(newSocket);
+      newSocket.on("connect", () => {
+        socket.current = newSocket;
+        joinBoard(boardId);
+      });
+
+      newSocket.on("error", (msg: string) => {
+        console.error("SocketIO: Error", msg);
+      });
+
+      newSocket.on(SocketEventsEnum.boardsUpdateSuccess, (updatedBoardData) => {
+        console.log("Received updated board data:", updatedBoardData);
+        updateBoardContext(updatedBoardData); // Update state with the new board data
+      });
 
       return () => {
-        newSocket.disconnect();
+        if (socket.current) {
+          leaveBoard(boardId);
+          socket.current.removeAllListeners();
+          socket.current.close();
+        }
       };
     }
-  }, [token]);
+  }, []);
+
+  const updateBoard = (title: string) => {
+    if (socket.current !== null) {
+      socket.current.emit(SocketEventsEnum.boardsUpdate, {
+        boardId,
+        fields: { title },
+      });
+    }
+  };
 
   const joinBoard = (boardId: string) => {
-    if (socket) {
-      socket.emit(SocketEventsEnum.boardsJoin, { boardId });
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsJoin, { boardId });
     }
   };
 
   const leaveBoard = (boardId: string) => {
-    if (socket) {
-      socket.emit(SocketEventsEnum.boardsLeave, { boardId });
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsLeave, { boardId });
     }
   };
 
   const value = useMemo(
     () => ({
-      socket,
+      socket: socket.current,
       joinBoard,
       leaveBoard,
+      updateBoard,
     }),
-    [socket, joinBoard, leaveBoard],
+    [socket, joinBoard, leaveBoard, updateBoard],
   );
 
   return (

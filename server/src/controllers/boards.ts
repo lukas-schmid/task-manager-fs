@@ -9,7 +9,7 @@ import { getErrorMessage } from "../helpers";
 export const getBoards = async (
   req: ExpressRequestInterface,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) {
@@ -25,7 +25,7 @@ export const getBoards = async (
 export const getBoard = async (
   req: ExpressRequestInterface,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) {
@@ -41,7 +41,7 @@ export const getBoard = async (
 export const createBoard = async (
   req: ExpressRequestInterface,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) {
@@ -61,7 +61,7 @@ export const createBoard = async (
 export const joinBoard = (
   io: Server,
   socket: Socket,
-  data: { boardId: string }
+  data: { boardId: string },
 ) => {
   console.log("server socket io join", socket.user);
   socket.join(data.boardId);
@@ -70,7 +70,7 @@ export const joinBoard = (
 export const leaveBoard = (
   io: Server,
   socket: Socket,
-  data: { boardId: string }
+  data: { boardId: string },
 ) => {
   console.log("server socket io leave", data.boardId);
   socket.leave(data.boardId);
@@ -79,24 +79,25 @@ export const leaveBoard = (
 export const updateBoard = async (
   io: Server,
   socket: Socket,
-  data: { boardId: string; fields: { title: string } }
+  data: { boardId: string; fields: { title: string } },
 ) => {
   try {
     if (!socket.user) {
       socket.emit(
         SocketEventsEnum.boardsUpdateFailure,
-        "User is not authorized"
+        "User is not authorized",
       );
       return;
     }
     const updatedBoard = await BoardModel.findByIdAndUpdate(
       data.boardId,
       data.fields,
-      { new: true }
+      { new: true },
     );
+
     io.to(data.boardId).emit(
       SocketEventsEnum.boardsUpdateSuccess,
-      updatedBoard
+      updatedBoard,
     );
   } catch (err) {
     socket.emit(SocketEventsEnum.boardsUpdateFailure, getErrorMessage(err));
@@ -106,13 +107,13 @@ export const updateBoard = async (
 export const deleteBoard = async (
   io: Server,
   socket: Socket,
-  data: { boardId: string }
+  data: { boardId: string },
 ) => {
   try {
     if (!socket.user) {
       socket.emit(
         SocketEventsEnum.boardsDeleteFailure,
-        "User is not authorized"
+        "User is not authorized",
       );
       return;
     }

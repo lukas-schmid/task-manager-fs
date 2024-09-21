@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { InputHTMLAttributes, useCallback, useEffect, useRef } from "react";
 
-interface InlineFormProps {
+interface InlineFormProps extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
   name: string;
   isEditing: boolean;
@@ -16,6 +16,7 @@ export const InlineForm = ({
   isEditing,
   setIsEditing,
   action,
+  ...rest
 }: InlineFormProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,9 +38,9 @@ export const InlineForm = ({
             name={name}
             ref={inputRef}
             type="text"
-            placeholder="Board name"
             className="px-1 py-2 bg-card border-none"
             onBlur={handleBlur}
+            {...rest}
           />
         </form>
       ) : (

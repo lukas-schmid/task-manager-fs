@@ -1,0 +1,38 @@
+import Link from "next/link";
+import { SocketProvider } from "../context/SocketProvider";
+import { Column as ColumnInterface } from "../types/column.interface";
+import { Task } from "../types/task.interface";
+import { Board } from "../types/board.interface";
+import { BoardContent } from "./board-content";
+import { ArrowLeft } from "lucide-react";
+
+interface BoardPageProps {
+  board: Board | null;
+  columns: ColumnInterface[] | null;
+  tasks: Task[] | null;
+  sessionToken: string | undefined;
+}
+
+export const BoardPage = ({
+  board,
+  columns,
+  tasks,
+  sessionToken,
+}: BoardPageProps) => {
+  return (
+    <SocketProvider token={sessionToken} boardId={board?.id}>
+      <div>
+        <nav className="flex items-center justify-between h-16 px-4 gap-3 bg-muted">
+          <div className="flex items-center gap-5">
+            <Link className="flex items-center gap-3 text-sm" href="/boards">
+              <ArrowLeft /> Overview
+            </Link>
+            <h2 className="text-xl">{board?.title}</h2>
+          </div>
+          <Link href="/logout">Logout</Link>
+        </nav>
+        <BoardContent board={board} columns={columns} tasks={tasks} />
+      </div>
+    </SocketProvider>
+  );
+};

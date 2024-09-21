@@ -46,7 +46,7 @@ app.get("/api/boards/:boardId", authMiddleware, boardsController.getBoard);
 app.get(
   "/api/boards/:boardId/columns",
   authMiddleware,
-  columnsController.getColumns
+  columnsController.getColumns,
 );
 app.get("/api/boards/:boardId/tasks", authMiddleware, tasksController.getTasks);
 app.post("/api/boards", authMiddleware, boardsController.createBoard);

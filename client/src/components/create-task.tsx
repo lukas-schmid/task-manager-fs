@@ -31,7 +31,7 @@ export const CreateTask = ({ columnId }: CreateTaskProps) => {
   return (
     <Card
       onClick={handleClick}
-      className="min-h-10 p-0 cursor-pointer h-full flex justify-center items-center border"
+      className="min-h-14 max-h-14 p-0 cursor-pointer flex justify-center items-center border"
     >
       <div className="flex flex-col justify-center items-center p-1">
         <InlineFormInput

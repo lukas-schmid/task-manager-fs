@@ -26,7 +26,7 @@ export const CreateColumn = () => {
   return (
     <Card
       onClick={handleClick}
-      className="min-h-20 cursor-pointer h-full flex justify-center items-center border"
+      className="min-h-20 max-h-20 min-w-60 max-w-60 cursor-pointer flex justify-center items-center border"
     >
       <div className="flex flex-col justify-center items-center gap-2">
         <InlineFormInput

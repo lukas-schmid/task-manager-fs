@@ -34,7 +34,10 @@
 
   --ring: hsl(215 82% 44%);
 }
-
+html,
+body {
+  height: 100%;
+}
 body {
   color: var(--foreground);
   background: var(--background);

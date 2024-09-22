@@ -4,11 +4,12 @@ import { Column as ColumnInterface } from "@/types/column.interface";
 import { Task } from "@/types/task.interface";
 import { Board } from "@/types/board.interface";
 import { BoardContent } from "@/components/board-content";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LogOut } from "lucide-react";
 import { BoardHeaderTitle } from "@/components/board-header-title";
 import { BoardProvider } from "@/context/BoardProvider";
 import { ColumnsProvider } from "@/context/ColumnsProvider";
 import { TasksProvider } from "@/context/tasksProvider";
+import { LogoutButton } from "./logout-button";
 
 interface BoardPageProps {
   board: Board | null;
@@ -30,8 +31,8 @@ export const BoardPage = ({
       <ColumnsProvider initialColumns={columns}>
         <TasksProvider initialTasks={tasks}>
           <SocketProvider token={sessionToken} boardId={board?.id}>
-            <div>
-              <nav className="flex items-center justify-between h-16 px-4 gap-3 bg-muted">
+            <nav className="h-16 w-full gap-3 bg-muted z-50 fixed">
+              <div className="flex items-center justify-between h-full px-4 gap-3">
                 <div className="flex items-center gap-5">
                   <Link
                     className="flex items-center gap-3 text-sm"
@@ -41,10 +42,10 @@ export const BoardPage = ({
                   </Link>
                   <BoardHeaderTitle />
                 </div>
-                <Link href="/logout">Logout</Link>
-              </nav>
-              <BoardContent taskIdSearchParam={taskIdSearchParam} />
-            </div>
+                <LogoutButton />
+              </div>
+            </nav>
+            <BoardContent taskIdSearchParam={taskIdSearchParam} />
           </SocketProvider>
         </TasksProvider>
       </ColumnsProvider>

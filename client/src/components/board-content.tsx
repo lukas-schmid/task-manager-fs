@@ -27,8 +27,8 @@ export const BoardContent = ({ taskIdSearchParam }: BoardContentProps) => {
   };
 
   return (
-    <main className="min-h-screen p-3 bg-primary">
-      <div className="flex flex-row gap-3 overflow-x-auto">
+    <main className="h-full pt-20 p-3 bg-primary overflow-x-auto">
+      <div className="h-full flex flex-row gap-3 overflow-x-auto">
         {columns &&
           columns.map((column) => (
             <Column
@@ -38,13 +38,15 @@ export const BoardContent = ({ taskIdSearchParam }: BoardContentProps) => {
             />
           ))}
         <CreateColumn />
-        {tasks && tasks.some((task) => task.id === taskIdSearchParam) && (
-          <TaskModal
-            isOpen={isTaskModalOpen}
-            onClose={handleTaskModalClose}
-            taskId={taskIdSearchParam}
-          />
-        )}
+        {taskIdSearchParam &&
+          tasks &&
+          tasks.some((task) => task.id === taskIdSearchParam) && (
+            <TaskModal
+              isOpen={isTaskModalOpen}
+              onClose={handleTaskModalClose}
+              taskId={taskIdSearchParam}
+            />
+          )}
       </div>
     </main>
   );

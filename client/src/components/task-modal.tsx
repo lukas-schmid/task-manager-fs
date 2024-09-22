@@ -9,6 +9,7 @@ import { InlineFormInput } from "@/components/inline-form-input";
 import { InlineFormTextarea } from "@/components/inline-form-textarea";
 import { ColumnSelect } from "./column-select";
 import Dialog from "./dialog";
+import { useRouter, usePathname } from "next/navigation";
 
 interface TaskModalProps {
   taskId: string;
@@ -18,6 +19,8 @@ interface TaskModalProps {
 
 export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
   const { tasks } = useTasks();
   const { updateTask, deleteTask } = useSocket();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -28,10 +31,11 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     return tasks?.find((task) => task.id === taskId);
   }, [tasks, taskId]);
 
-  const handleConfirm = () => {
+  const handleConfirmDelete = () => {
     if (currentTask) {
       deleteTask(currentTask?.id);
       setDialogOpen(false);
+      router.push(pathname);
     }
   };
 
@@ -178,14 +182,13 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center gap-3">
+      <div className="flex justify-end items-center gap-3">
         <Button
+          className="text-sm bg-transparent text-red-600 hover:Text-red-500 hover:bg-transparent hover:font-semibold"
           onClick={openDialog}
-          className="flex justify-center items-center p-0 h-5 w-5 bg-red-600 hover:bg-red-500"
         >
-          <Trash2 size={15} />
+          Delete Task
         </Button>
-
         <Button className="text-sm text-white" onClick={onClose}>
           Close
         </Button>
@@ -193,7 +196,7 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
       <Dialog
         title="Delete this task?"
         message="Are you sure you want to delete this task including all its content?"
-        onConfirm={handleConfirm}
+        onConfirm={handleConfirmDelete}
         onCancel={handleCancel}
         isOpen={isDialogOpen}
       />

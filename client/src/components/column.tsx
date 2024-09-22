@@ -47,7 +47,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
   }, []);
 
   return (
-    <div className="flex justify-start items-center relative flex-col min-h-screen min-w-60 max-w-60 bg-secondary rounded">
+    <div className="flex justify-start items-center relative flex-col h-full min-w-60 max-w-60 bg-secondary rounded">
       <Button
         className="h-5 w-5 p-0 absolute right-0 top-0 bg-transparent hover:bg-transparent"
         onClick={openDialog}
@@ -68,7 +68,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
           {!isEditing && <Pencil size={10} />}
         </div>
       </div>
-      <div className="flex flex-col gap-2 w-full p-2">
+      <div className="flex flex-col gap-2 w-full p-2 overflow-y-auto h-full">
         <CreateTask columnId={column.id} />
         {tasks.map((task) => (
           <Task key={task.id} task={task} />

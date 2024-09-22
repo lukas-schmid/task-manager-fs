@@ -25,13 +25,15 @@ interface SocketContextType {
   updateColumn(columnId: string, title: string): void;
   deleteColumn(columnId: string): void;
   createTask(taskId: string, title: string): void;
-  updateTask(
-    columnId: string,
-    taskId: string,
-    title: string,
-    description: string,
-  ): void;
-  deleteColumn(taskId: string): void;
+  updateTask(params: {
+    taskId: string;
+    fields: {
+      title?: string;
+      description?: string;
+      columnId?: string;
+    };
+  }): void;
+  deleteTask(taskId: string): void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -140,7 +142,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   }, []);
 
   const updateTask = useCallback(
-    (columnId: string, taskId: string, title: string, description: string) => {
+    ({
+      taskId,
+      fields: { title, description, columnId },
+    }: {
+      taskId: string;
+      fields: { title?: string; description?: string; columnId?: string };
+    }) => {
       if (socket.current !== null) {
         socket.current.emit(SocketEventsEnum.tasksUpdate, {
           boardId,

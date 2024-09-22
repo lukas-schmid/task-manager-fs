@@ -5,10 +5,27 @@ import { Column } from "@/components/column";
 import { CreateColumn } from "@/components/create-column";
 import { useColumns } from "@/context/ColumnsProvider";
 import { useTasks } from "@/context/tasksProvider";
+import { TaskModal } from "./task-modal";
+import { usePathname, useRouter } from "next/navigation";
 
-export const BoardContent = () => {
+interface BoardContentProps {
+  taskIdSearchParam: string | undefined;
+}
+
+export const BoardContent = ({ taskIdSearchParam }: BoardContentProps) => {
   const { columns } = useColumns();
   const { tasks } = useTasks();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isTaskModalOpen = tasks
+    ? tasks.some((task) => task.id === taskIdSearchParam)
+    : false;
+
+  const handleTaskModalClose = () => {
+    router.replace(pathname);
+  };
+
   return (
     <main className="min-h-screen p-3 bg-primary">
       <div className="flex flex-row gap-3 overflow-x-auto">
@@ -21,6 +38,13 @@ export const BoardContent = () => {
             />
           ))}
         <CreateColumn />
+        {tasks && tasks.some((task) => task.id === taskIdSearchParam) && (
+          <TaskModal
+            isOpen={isTaskModalOpen}
+            onClose={handleTaskModalClose}
+            taskId={taskIdSearchParam}
+          />
+        )}
       </div>
     </main>
   );

@@ -1,13 +1,13 @@
 import { Column as ColumnInterface } from "@/types/column.interface";
 import { Task as TaskInterface } from "@/types/task.interface";
-import { Task } from "./task";
-import { InlineForm } from "./inline-form";
+import { Task } from "@/components/task";
 import { useCallback, useState } from "react";
 import { CircleX, Pencil } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
 import { Button } from "@/components/button";
 import Dialog from "@/components/dialog";
-import { CreateTask } from "./create-task";
+import { CreateTask } from "@/components/create-task";
+import { InlineFormInput } from "@/components/inline-form-input";
 
 interface ColumnProps {
   column: ColumnInterface;
@@ -56,7 +56,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
       </Button>
       <div className="p-3">
         <div onClick={handleClick} className="flex items-center gap-2">
-          <InlineForm
+          <InlineFormInput
             isEditing={isEditing}
             name="title"
             setIsEditing={setIsEditing}

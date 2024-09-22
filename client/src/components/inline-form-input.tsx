@@ -2,7 +2,7 @@
 
 import { InputHTMLAttributes, useCallback, useEffect, useRef } from "react";
 
-interface InlineFormProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InlineFormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
   name: string;
   isEditing: boolean;
@@ -10,19 +10,19 @@ interface InlineFormProps extends InputHTMLAttributes<HTMLInputElement> {
   action(payload: FormData): void;
 }
 
-export const InlineForm = ({
+export const InlineFormInput = ({
   text,
   name,
   isEditing,
   setIsEditing,
   action,
   ...rest
-}: InlineFormProps) => {
+}: InlineFormInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleBlur = useCallback(() => {
     setIsEditing(false);
-  }, [setIsEditing]);
+  }, []);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {

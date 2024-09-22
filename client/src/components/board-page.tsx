@@ -12,6 +12,7 @@ import { TasksProvider } from "@/context/tasksProvider";
 
 interface BoardPageProps {
   board: Board | null;
+  taskIdSearchParam: string | undefined;
   columns: ColumnInterface[] | null;
   tasks: Task[] | null;
   sessionToken: string | undefined;
@@ -19,6 +20,7 @@ interface BoardPageProps {
 
 export const BoardPage = ({
   board,
+  taskIdSearchParam,
   columns,
   tasks,
   sessionToken,
@@ -41,7 +43,7 @@ export const BoardPage = ({
                 </div>
                 <Link href="/logout">Logout</Link>
               </nav>
-              <BoardContent tasks={tasks} />
+              <BoardContent taskIdSearchParam={taskIdSearchParam} />
             </div>
           </SocketProvider>
         </TasksProvider>

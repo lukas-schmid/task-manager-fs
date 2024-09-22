@@ -2,9 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { Card } from "@/components/card";
-import { InlineForm } from "@/components/inline-form";
 import { CirclePlus } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
+import { InlineFormInput } from "@/components/inline-form-input";
 
 interface CreateTaskProps {
   columnId: string;
@@ -34,7 +34,7 @@ export const CreateTask = ({ columnId }: CreateTaskProps) => {
       className="min-h-10 p-0 cursor-pointer h-full flex justify-center items-center border"
     >
       <div className="flex flex-col justify-center items-center p-1">
-        <InlineForm
+        <InlineFormInput
           isEditing={isEditing}
           name="title"
           setIsEditing={setIsEditing}

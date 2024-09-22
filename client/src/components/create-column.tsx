@@ -2,9 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { Card } from "@/components/card";
-import { InlineForm } from "@/components/inline-form";
 import { CirclePlus } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
+import { InlineFormInput } from "@/components/inline-form-input";
 
 export const CreateColumn = () => {
   const { createColumn } = useSocket();
@@ -29,7 +29,7 @@ export const CreateColumn = () => {
       className="min-h-20 cursor-pointer h-full flex justify-center items-center border"
     >
       <div className="flex flex-col justify-center items-center gap-2">
-        <InlineForm
+        <InlineFormInput
           isEditing={isEditing}
           name="title"
           setIsEditing={setIsEditing}

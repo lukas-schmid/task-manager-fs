@@ -71,11 +71,13 @@ export const updateTask = async (
       );
       return;
     }
+
     const updatedTask = await TaskModel.findByIdAndUpdate(
       data.taskId,
       data.fields,
       { new: true },
     );
+
     io.to(data.boardId).emit(SocketEventsEnum.tasksUpdateSuccess, updatedTask);
   } catch (err) {
     socket.emit(SocketEventsEnum.tasksUpdateFailure, getErrorMessage(err));

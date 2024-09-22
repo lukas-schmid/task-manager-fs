@@ -2,7 +2,7 @@ TODO
 
 - error handling when socket error (frontend and backend)
   - show toaster maybe?
--
+- add tests
 
 Bugs
 

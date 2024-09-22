@@ -8,10 +8,12 @@ interface BoardProps {
   params: {
     boardId: string;
   };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default async function Board({ params }: BoardProps) {
+export default async function Board({ params, searchParams }: BoardProps) {
   const boardId = params.boardId;
+  const taskIdSearchParam = searchParams?.taskid as string | undefined;
   const session = await getSession();
   const board = await getBoard(boardId);
   const columns = await getColumns(boardId);
@@ -20,6 +22,7 @@ export default async function Board({ params }: BoardProps) {
   return (
     <BoardPage
       board={board}
+      taskIdSearchParam={taskIdSearchParam}
       columns={columns}
       tasks={tasks}
       sessionToken={session?.token}

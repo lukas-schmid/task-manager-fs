@@ -1,13 +1,13 @@
 "use client";
 
 import { Pencil } from "lucide-react";
-import { InlineForm } from "@/components/inline-form";
 import { useCallback, useState } from "react";
 import { useBoard } from "@/context/BoardProvider";
 import { useSocket } from "@/context/SocketProvider";
 import Dialog from "@/components/dialog";
 import { Button } from "./button";
 import { Trash2 } from "lucide-react";
+import { InlineFormInput } from "@/components/inline-form-input";
 
 export const BoardHeaderTitle = () => {
   const { board } = useBoard();
@@ -49,7 +49,7 @@ export const BoardHeaderTitle = () => {
   return (
     <>
       <div onClick={handleClick} className="flex items-center gap-2">
-        <InlineForm
+        <InlineFormInput
           isEditing={isEditing}
           name="title"
           setIsEditing={setIsEditing}

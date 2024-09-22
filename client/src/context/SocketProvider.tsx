@@ -13,6 +13,7 @@ import { SocketEventsEnum } from "@/types/socketEvents.enum";
 import { useBoard } from "@/context/BoardProvider";
 import { useRouter } from "next/navigation";
 import { useColumns } from "./ColumnsProvider";
+import { useTasks } from "./tasksProvider";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -23,6 +24,14 @@ interface SocketContextType {
   createColumn(title: string): void;
   updateColumn(columnId: string, title: string): void;
   deleteColumn(columnId: string): void;
+  createTask(taskId: string, title: string): void;
+  updateTask(
+    columnId: string,
+    taskId: string,
+    title: string,
+    description: string,
+  ): void;
+  deleteColumn(taskId: string): void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -46,6 +55,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     updateColumn: updateColumnContext,
     deleteColumn: deleteColumnContext,
   } = useColumns();
+
+  const {
+    createTask: createTaskContext,
+    updateTask: updateTaskContext,
+    deleteTask: deleteTaskContext,
+  } = useTasks();
 
   const socket = useRef<Socket | null>(null);
 
@@ -114,6 +129,45 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     [boardId],
   );
 
+  const createTask = useCallback((columnId: string, title: string) => {
+    if (socket.current !== null) {
+      socket.current.emit(SocketEventsEnum.tasksCreate, {
+        boardId,
+        columnId,
+        title,
+      });
+    }
+  }, []);
+
+  const updateTask = useCallback(
+    (columnId: string, taskId: string, title: string, description: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.tasksUpdate, {
+          boardId,
+          taskId,
+          fields: {
+            title,
+            description,
+            columnId,
+          },
+        });
+      }
+    },
+    [],
+  );
+
+  const deleteTask = useCallback(
+    (taskId: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.tasksDelete, {
+          boardId,
+          taskId,
+        });
+      }
+    },
+    [boardId],
+  );
+
   useEffect(() => {
     if (boardId) {
       const newSocket = io("http://localhost:4001", {
@@ -160,6 +214,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         deleteColumnContext(columnId);
       });
 
+      newSocket.on(SocketEventsEnum.tasksCreateSuccess, (createdTaskData) => {
+        createTaskContext(createdTaskData);
+      });
+
+      newSocket.on(SocketEventsEnum.tasksUpdateSuccess, (updatedTaskData) => {
+        updateTaskContext(updatedTaskData);
+      });
+
+      newSocket.on(SocketEventsEnum.tasksDeleteSuccess, (taskId) => {
+        deleteTaskContext(taskId);
+      });
+
       return () => {
         if (socket.current) {
           leaveBoard(boardId);
@@ -180,6 +246,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       createColumn,
       updateColumn,
       deleteColumn,
+      createTask,
+      updateTask,
+      deleteTask,
     }),
     [
       socket,
@@ -190,6 +259,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       createColumn,
       updateColumn,
       deleteColumn,
+      createTask,
+      updateTask,
+      deleteTask,
     ],
   );
 

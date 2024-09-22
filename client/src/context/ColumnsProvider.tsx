@@ -30,8 +30,17 @@ export const ColumnsProvider: React.FC<ColumnsProviderProps> = ({
   const [columns, setColumns] = useState<Column[] | null>(initialColumns);
 
   const createColumn = useCallback((column: Column) => {
-    console.log("createColumn", column);
-    setColumns((state) => state && [...state, column]);
+    setColumns((state) => {
+      const columnExists = state?.some(
+        (existingColumn) => existingColumn.id === column.id,
+      );
+
+      if (!columnExists) {
+        return [...(state || []), column];
+      }
+
+      return state;
+    });
   }, []);
 
   const updateColumn = useCallback((column: Column) => {

@@ -9,13 +9,14 @@ import { getErrorMessage } from "../helpers";
 export const getTasks = async (
   req: ExpressRequestInterface,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req.user) {
       return res.sendStatus(401);
     }
     const tasks = await TaskModel.find({ boardId: req.params.boardId });
+    console.log(tasks);
     res.send(tasks);
   } catch (err) {
     next(err);
@@ -29,13 +30,13 @@ export const createTask = async (
     boardId: string;
     title: string;
     columnId: string;
-  }
+  },
 ) => {
   try {
     if (!socket.user) {
       socket.emit(
         SocketEventsEnum.columnsCreateFailure,
-        "User is not authorized"
+        "User is not authorized",
       );
       return;
     }
@@ -60,20 +61,20 @@ export const updateTask = async (
     boardId: string;
     taskId: string;
     fields: { title?: string; description?: string; columnId?: string };
-  }
+  },
 ) => {
   try {
     if (!socket.user) {
       socket.emit(
         SocketEventsEnum.tasksUpdateFailure,
-        "User is not authorized"
+        "User is not authorized",
       );
       return;
     }
     const updatedTask = await TaskModel.findByIdAndUpdate(
       data.taskId,
       data.fields,
-      { new: true }
+      { new: true },
     );
     io.to(data.boardId).emit(SocketEventsEnum.tasksUpdateSuccess, updatedTask);
   } catch (err) {
@@ -84,13 +85,13 @@ export const updateTask = async (
 export const deleteTask = async (
   io: Server,
   socket: Socket,
-  data: { boardId: string; taskId: string }
+  data: { boardId: string; taskId: string },
 ) => {
   try {
     if (!socket.user) {
       socket.emit(
         SocketEventsEnum.tasksDeleteFailure,
-        "User is not authorized"
+        "User is not authorized",
       );
       return;
     }

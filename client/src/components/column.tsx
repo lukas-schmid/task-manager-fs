@@ -7,6 +7,7 @@ import { CircleX, Pencil } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
 import { Button } from "@/components/button";
 import Dialog from "@/components/dialog";
+import { CreateTask } from "./create-task";
 
 interface ColumnProps {
   column: ColumnInterface;
@@ -68,6 +69,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-2 w-full p-2">
+        <CreateTask columnId={column.id} />
         {tasks.map((task) => (
           <Task key={task.id} task={task} />
         ))}

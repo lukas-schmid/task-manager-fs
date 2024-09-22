@@ -2,12 +2,15 @@ TODO
 
 - error handling when socket error (frontend and backend)
   - show toaster maybe?
+  - use Failure sockets
+  - handle 404 etc
 - add tests
+- deploy
+- test mobile
+- make READ me in root
+- (optional) make filter boards and tasks
+- make page not found frontend
 
 Bugs
 
-- create board, delete and then you get redirected to the boards overview. but the deleted board is still there.
-  you can click on it but when you refresh you get an server action error
-- multiple columns not scrollbar x axis
-- create column creates two columns with the same id (and also deletes 2 with the same id)
 - double render and double join Borad?

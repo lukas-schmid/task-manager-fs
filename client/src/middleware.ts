@@ -6,8 +6,11 @@ const publicRoutes = ["/login", "/register", "/"];
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  const isProtectedRoute = protectedRoutes.includes(path);
-  const isPublicRoute = publicRoutes.includes(path);
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    path.startsWith(route),
+  );
+  const isPublicRoute = publicRoutes.some((route) => path.startsWith(route));
 
   const jwtToken = await decryptSession("accessToken");
 
@@ -16,7 +19,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
-  // 6. Redirect to boards if the user is authenticated
+  // Redirect to boards if the user is authenticated
   if (
     isPublicRoute &&
     jwtToken &&

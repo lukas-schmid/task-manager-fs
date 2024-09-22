@@ -6,8 +6,10 @@ import React, {
   useState,
   useMemo,
   useCallback,
+  useEffect,
 } from "react";
 import { Board } from "@/types/board.interface";
+import { useRouter } from "next/navigation";
 
 interface BoardContextType {
   board: Board | null;
@@ -26,6 +28,7 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
   initialBoard,
   children,
 }) => {
+  const router = useRouter();
   const [board, setBoard] = useState<Board | null>(initialBoard);
 
   const updateBoard = useCallback((board: Board) => {
@@ -35,6 +38,13 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
   const deleteBoard = useCallback(() => {
     setBoard(null);
   }, []);
+
+  useEffect(() => {
+    if (!board) {
+      router.push("/boards");
+      router.refresh();
+    }
+  }, [board]);
 
   const value = useMemo(
     () => ({

@@ -1,10 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { Server } from "socket.io";
 import { Socket } from "../types/socket.interface";
 import BoardModel from "../models/board";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { SocketEventsEnum } from "../types/socketEvents.enum";
 import { getErrorMessage } from "../helpers";
+import { ErrorCodes } from "../types/errorCodes.enum";
+import { CustomError } from "../utils/CustomError";
 
 export const getBoards = async (
   req: ExpressRequestInterface,
@@ -13,7 +15,11 @@ export const getBoards = async (
 ) => {
   try {
     if (!req.user) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
     const boards = await BoardModel.find({ userId: req.user.id });
     res.send(boards);
@@ -29,12 +35,18 @@ export const getBoard = async (
 ) => {
   try {
     if (!req.user) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
     const board = await BoardModel.findById(req.params.boardId);
+
     if (!board) {
-      return res.status(404).json({ message: "Board not found" });
+      throw new CustomError("Board not found", ErrorCodes.notFound, 404);
     }
+
     res.send(board);
   } catch (err) {
     next(err);
@@ -48,7 +60,11 @@ export const createBoard = async (
 ) => {
   try {
     if (!req.user) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
     const newBoard = new BoardModel({
       title: req.body.title,
@@ -97,6 +113,8 @@ export const updateBoard = async (
       data.fields,
       { new: true },
     );
+
+    console.log(updatedBoard);
 
     io.to(data.boardId).emit(
       SocketEventsEnum.boardsUpdateSuccess,

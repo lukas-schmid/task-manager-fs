@@ -3,7 +3,7 @@ import { ErrorCodes } from "@/types/errorCodes.enum";
 export interface AuthError {
   message: string;
   code: ErrorCodes;
-  errors: string[];
+  details: string[];
 }
 
 export interface AuthSuccess {

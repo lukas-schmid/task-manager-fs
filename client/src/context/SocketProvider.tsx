@@ -192,6 +192,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       });
 
       newSocket.on(SocketEventsEnum.boardsUpdateSuccess, (updatedBoardData) => {
+        console.log("updatedboard", updatedBoardData);
         updateBoardContext(updatedBoardData);
       });
 

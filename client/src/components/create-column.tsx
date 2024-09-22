@@ -1,25 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Card } from "@/components/card";
 import { InlineForm } from "@/components/inline-form";
-import { useFormState } from "react-dom";
-import { createBoard } from "@/actions/boards";
 import { CirclePlus } from "lucide-react";
+import { useSocket } from "@/context/SocketProvider";
 
 export const CreateColumn = () => {
-  const [state, action] = useFormState(createBoard, undefined);
+  const { createColumn } = useSocket();
   const [isEditing, setIsEditing] = useState(false);
 
   const handleClick = useCallback(() => {
     setIsEditing(true);
   }, []);
 
-  useEffect(() => {
-    if (state?.status === "success") {
+  const handleCreateColumn = useCallback(
+    (payload: FormData) => {
+      const title = payload.get("title") as string;
+      createColumn(title);
       setIsEditing(false);
-    }
-  }, [state]);
+    },
+    [createColumn],
+  );
 
   return (
     <Card
@@ -31,7 +33,7 @@ export const CreateColumn = () => {
           isEditing={isEditing}
           name="title"
           setIsEditing={setIsEditing}
-          action={action}
+          action={handleCreateColumn}
           text="Create new column"
         />
 

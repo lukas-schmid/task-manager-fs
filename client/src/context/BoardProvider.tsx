@@ -12,6 +12,7 @@ import { Board } from "@/types/board.interface";
 interface BoardContextType {
   board: Board | null;
   updateBoard(board: Board): void;
+  deleteBoard(): void;
 }
 
 const BoardContext = createContext<BoardContextType | undefined>(undefined);
@@ -31,12 +32,17 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
     setBoard(board);
   }, []);
 
+  const deleteBoard = useCallback(() => {
+    setBoard(null);
+  }, []);
+
   const value = useMemo(
     () => ({
       board,
       updateBoard,
+      deleteBoard,
     }),
-    [board, updateBoard],
+    [board, updateBoard, deleteBoard],
   );
 
   return (

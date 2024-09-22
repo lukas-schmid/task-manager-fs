@@ -11,12 +11,18 @@ import React, {
 import { io, Socket } from "socket.io-client";
 import { SocketEventsEnum } from "@/types/socketEvents.enum";
 import { useBoard } from "@/context/BoardProvider";
+import { useRouter } from "next/navigation";
+import { useColumns } from "./ColumnsProvider";
 
 interface SocketContextType {
   socket: Socket | null;
   joinBoard(boardId: string): void;
   leaveBoard(boardId: string): void;
   updateBoard(title: string): void;
+  deleteBoard(): void;
+  createColumn(title: string): void;
+  updateColumn(columnId: string, title: string): void;
+  deleteColumn(columnId: string): void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -32,8 +38,28 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
   boardId,
   children,
 }) => {
-  const { updateBoard: updateBoardContext } = useBoard();
+  const router = useRouter();
+  const { updateBoard: updateBoardContext, deleteBoard: deleteBoardContext } =
+    useBoard();
+  const {
+    createColumn: createColumnContext,
+    updateColumn: updateColumnContext,
+    deleteColumn: deleteColumnContext,
+  } = useColumns();
+
   const socket = useRef<Socket | null>(null);
+
+  const joinBoard = useCallback((boardId: string) => {
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsJoin, { boardId });
+    }
+  }, []);
+
+  const leaveBoard = useCallback((boardId: string) => {
+    if (socket.current) {
+      socket.current.emit(SocketEventsEnum.boardsLeave, { boardId });
+    }
+  }, []);
 
   const updateBoard = useCallback(
     (title: string) => {
@@ -47,17 +73,46 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     [boardId],
   );
 
-  const joinBoard = useCallback((boardId: string) => {
-    if (socket.current) {
-      socket.current.emit(SocketEventsEnum.boardsJoin, { boardId });
+  const deleteBoard = useCallback(() => {
+    if (socket.current !== null) {
+      socket.current.emit(SocketEventsEnum.boardsDelete, {
+        boardId,
+      });
+    }
+  }, [boardId]);
+
+  const createColumn = useCallback((title: string) => {
+    if (socket.current !== null) {
+      socket.current.emit(SocketEventsEnum.columnsCreate, {
+        boardId,
+        title,
+      });
     }
   }, []);
 
-  const leaveBoard = useCallback((boardId: string) => {
-    if (socket.current) {
-      socket.current.emit(SocketEventsEnum.boardsLeave, { boardId });
+  const updateColumn = useCallback((columnId: string, title: string) => {
+    if (socket.current !== null) {
+      socket.current.emit(SocketEventsEnum.columnsUpdate, {
+        boardId,
+        columnId,
+        fields: {
+          title,
+        },
+      });
     }
   }, []);
+
+  const deleteColumn = useCallback(
+    (columnId: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.columnsDelete, {
+          boardId,
+          columnId,
+        });
+      }
+    },
+    [boardId],
+  );
 
   useEffect(() => {
     if (boardId) {
@@ -78,6 +133,33 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         updateBoardContext(updatedBoardData);
       });
 
+      newSocket.on(SocketEventsEnum.boardsUpdateSuccess, () => {
+        deleteBoardContext();
+      });
+
+      newSocket.on(SocketEventsEnum.boardsDeleteSuccess, () => {
+        deleteBoardContext();
+        router.push("/boards");
+      });
+
+      newSocket.on(
+        SocketEventsEnum.columnsCreateSuccess,
+        (createdColumnData) => {
+          createColumnContext(createdColumnData);
+        },
+      );
+
+      newSocket.on(
+        SocketEventsEnum.columnsUpdateSuccess,
+        (updatedColumnData) => {
+          updateColumnContext(updatedColumnData);
+        },
+      );
+
+      newSocket.on(SocketEventsEnum.columnsDeleteSuccess, (columnId) => {
+        deleteColumnContext(columnId);
+      });
+
       return () => {
         if (socket.current) {
           leaveBoard(boardId);
@@ -94,8 +176,21 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       joinBoard,
       leaveBoard,
       updateBoard,
+      deleteBoard,
+      createColumn,
+      updateColumn,
+      deleteColumn,
     }),
-    [socket, joinBoard, leaveBoard, updateBoard],
+    [
+      socket,
+      joinBoard,
+      leaveBoard,
+      updateBoard,
+      deleteBoard,
+      createColumn,
+      updateColumn,
+      deleteColumn,
+    ],
   );
 
   return (

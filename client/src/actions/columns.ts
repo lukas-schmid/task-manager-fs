@@ -10,21 +10,26 @@ export async function getColumns(boardId: string): Promise<Column[] | null> {
     return null;
   }
 
-  const response = await fetch(
-    `http://localhost:4001/api/boards/${boardId}/columns`,
-    {
-      method: "GET",
-
-      headers: {
-        Authorization: session.token,
+  try {
+    const response = await fetch(
+      `http://localhost:4001/api/boards/${boardId}/columns`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: session.token,
+        },
       },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch columns");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch columns");
+    }
+
+    const columns = await response.json();
+    return columns;
+  } catch (error) {
+    console.error("Error fetching columns:", error);
+    return null;
   }
-
-  const columns = await response.json();
-  return columns;
 }

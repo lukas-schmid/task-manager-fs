@@ -10,21 +10,26 @@ export async function getTasks(boardId: string): Promise<Task[] | null> {
     return null;
   }
 
-  const response = await fetch(
-    `http://localhost:4001/api/boards/${boardId}/tasks`,
-    {
-      method: "GET",
-
-      headers: {
-        Authorization: session.token,
+  try {
+    const response = await fetch(
+      `http://localhost:4001/api/boards/${boardId}/tasks`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: session.token,
+        },
       },
-    },
-  );
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch tasks");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch tasks");
+    }
+
+    const tasks = await response.json();
+    return tasks;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return null;
   }
-
-  const tasks = await response.json();
-  return tasks;
 }

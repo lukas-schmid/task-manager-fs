@@ -9,7 +9,7 @@ TODO
 - test mobile
 - make READ me in root
 - (optional) make filter boards and tasks
-- make page not found frontend
+- change hardcoded localhost endpoints to env. variables
 
 Bugs
 

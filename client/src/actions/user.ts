@@ -9,18 +9,23 @@ export async function getUser() {
     return null;
   }
 
-  // Use the token to fetch user details from your backend
-  const response = await fetch("http://localhost:4001/api/user", {
-    method: "GET",
-    headers: {
-      Authorization: session.token,
-    },
-  });
+  try {
+    const response = await fetch("http://localhost:4001/api/user", {
+      method: "GET",
+      headers: {
+        Authorization: session.token,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data.");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch user data.");
+    }
+
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return null;
   }
-
-  const user = await response.json();
-  return user;
 }

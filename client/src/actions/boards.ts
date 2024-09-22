@@ -1,8 +1,8 @@
 "use server";
 
-import { getSession } from "@/app/lib/session";
-import { Board } from "../types/board.interface";
-import { FormBoardState } from "../lib/definitions";
+import { getSession } from "@/lib/session";
+import { Board } from "@/types/board.interface";
+import { FormBoardState } from "@/lib/definitions";
 import { revalidatePath } from "next/cache";
 
 export async function getBoards(): Promise<Board[] | null> {
@@ -12,20 +12,25 @@ export async function getBoards(): Promise<Board[] | null> {
     return null;
   }
 
-  const response = await fetch("http://localhost:4001/api/boards", {
-    method: "GET",
+  try {
+    const response = await fetch("http://localhost:4001/api/boards", {
+      method: "GET",
+      headers: {
+        Authorization: session.token,
+      },
+    });
 
-    headers: {
-      Authorization: session.token,
-    },
-  });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch boards");
+    }
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch boards");
+    const boards = await response.json();
+    return boards;
+  } catch (error) {
+    console.error("Error fetching boards:", error);
+    return null;
   }
-
-  const boards = await response.json();
-  return boards;
 }
 
 export async function getBoard(boardId: string): Promise<Board | null> {
@@ -35,20 +40,28 @@ export async function getBoard(boardId: string): Promise<Board | null> {
     return null;
   }
 
-  const response = await fetch(`http://localhost:4001/api/boards/${boardId}`, {
-    method: "GET",
+  try {
+    const response = await fetch(
+      `http://localhost:4001/api/boards/${boardId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: session.token,
+        },
+      },
+    );
 
-    headers: {
-      Authorization: session.token,
-    },
-  });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch board");
+    }
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch board");
+    const board = await response.json();
+    return board;
+  } catch (error) {
+    console.error("Error fetching board:", error);
+    return null;
   }
-
-  const board = await response.json();
-  return board;
 }
 
 export async function createBoard(

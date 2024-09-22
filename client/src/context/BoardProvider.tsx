@@ -1,11 +1,18 @@
 "use client";
 
-import React, { createContext, useContext, useState, useMemo } from "react";
-import { Board } from "../types/board.interface";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
+import { Board } from "@/types/board.interface";
 
 interface BoardContextType {
   board: Board | null;
   updateBoard(board: Board): void;
+  deleteBoard(): void;
 }
 
 const BoardContext = createContext<BoardContextType | undefined>(undefined);
@@ -21,33 +28,21 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
 }) => {
   const [board, setBoard] = useState<Board | null>(initialBoard);
 
-  console.log("boardProvider boardId", board);
-  //useEffect(() => {
-  //  const fetchBoard = async () => {
-  //    setLoading(true);
-  //    try {
-  //      const boardData = await getBoard(boardId);
-  //      setBoard(boardData);
-  //    } catch (err) {
-  //      setError("Failed to fetch board data");
-  //    } finally {
-  //      setLoading(false);
-  //    }
-  //  };
-  //
-  //  fetchBoard();
-  //}, [boardId]);
-
-  const updateBoard = (board: Board) => {
+  const updateBoard = useCallback((board: Board) => {
     setBoard(board);
-  };
+  }, []);
+
+  const deleteBoard = useCallback(() => {
+    setBoard(null);
+  }, []);
 
   const value = useMemo(
     () => ({
       board,
       updateBoard,
+      deleteBoard,
     }),
-    [board, updateBoard],
+    [board, updateBoard, deleteBoard],
   );
 
   return (

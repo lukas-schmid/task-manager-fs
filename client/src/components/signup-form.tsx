@@ -1,8 +1,8 @@
 "use client";
 
-import { register } from "@/app/actions/auth";
-import { Input } from "./input";
-import { Button } from "./button";
+import { register } from "@/actions/auth";
+import { Input } from "@/components/input";
+import { Button } from "@/components/button";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 

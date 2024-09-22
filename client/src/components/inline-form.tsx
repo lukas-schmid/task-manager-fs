@@ -22,7 +22,7 @@ export const InlineForm = ({
 
   const handleBlur = useCallback(() => {
     setIsEditing(false);
-  }, []);
+  }, [setIsEditing]);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {

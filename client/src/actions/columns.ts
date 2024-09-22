@@ -1,7 +1,7 @@
 "use server";
 
-import { getSession } from "@/app/lib/session";
-import { Column } from "../types/column.interface";
+import { getSession } from "@/lib/session";
+import { Column } from "@/types/column.interface";
 
 export async function getColumns(boardId: string): Promise<Column[] | null> {
   const session = await getSession();

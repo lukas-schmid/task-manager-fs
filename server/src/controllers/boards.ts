@@ -32,6 +32,9 @@ export const getBoard = async (
       return res.sendStatus(401);
     }
     const board = await BoardModel.findById(req.params.boardId);
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
     res.send(board);
   } catch (err) {
     next(err);

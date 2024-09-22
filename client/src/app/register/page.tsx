@@ -1,5 +1,5 @@
-import { Card } from "../components/card";
-import { RegisterForm } from "../components/signup-form";
+import { Card } from "@/components/card";
+import { RegisterForm } from "@/components/signup-form";
 
 export default function Register() {
   return (

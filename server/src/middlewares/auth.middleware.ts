@@ -2,7 +2,9 @@ import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config";
 import UserModel from "../models/user";
+import { ErrorCodes } from "../types/errorCodes.enum";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
+import { CustomError } from "../utils/CustomError";
 
 export default async (
   req: ExpressRequestInterface,
@@ -13,19 +15,27 @@ export default async (
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
     const token = authHeader.split(" ")[1];
     const data = jwt.verify(token, jwtSecret) as { id: string; email: string };
     const user = await UserModel.findById(data.id);
 
     if (!user) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
 
     req.user = user;
     next();
   } catch (err) {
-    res.sendStatus(401);
+    next(err);
   }
 };

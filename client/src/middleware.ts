@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decryptSession } from "@/lib/session";
+import { logout } from "@/actions/auth";
 
 const protectedRoutes = ["/boards"];
-const publicRoutes = ["/login", "/register", "/"];
+const publicRoutes = ["/login", "/register"];
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -10,7 +11,8 @@ export default async function middleware(req: NextRequest) {
   const isProtectedRoute = protectedRoutes.some((route) =>
     path.startsWith(route),
   );
-  const isPublicRoute = publicRoutes.some((route) => path.startsWith(route));
+  const isPublicRoute =
+    publicRoutes.some((route) => path.startsWith(route)) || path === "/";
 
   const jwtToken = await decryptSession("accessToken");
 

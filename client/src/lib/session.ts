@@ -39,12 +39,18 @@ export async function createSession(sessionPayload: SessionPayload) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt(sessionPayload);
 
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieDomain = isProduction
+    ? "task-manager-collab.onrender.com"
+    : "localhost";
+
   cookies().set("accessToken", session, {
     httpOnly: true,
-    secure: true,
+    secure: isProduction,
     expires: expiresAt,
-    sameSite: "none",
+    sameSite: isProduction ? "none" : "lax",
     path: "/",
+    domain: cookieDomain,
   });
 }
 

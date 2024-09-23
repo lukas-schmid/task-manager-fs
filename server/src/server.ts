@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { Socket } from "./types/socket.interface";
@@ -9,11 +9,14 @@ import * as boardsController from "./controllers/boards";
 import * as columnsController from "./controllers/columns";
 import * as tasksController from "./controllers/tasks";
 import bodyParser from "body-parser";
-import authMiddleware from "./middlewares/auth";
+import authMiddleware from "./middlewares/auth.middleware";
 import cors from "cors";
 import { SocketEventsEnum } from "./types/socketEvents.enum";
 import { secret } from "./config";
 import User from "./models/user";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import { CustomError } from "./utils/CustomError";
+import { ErrorCodes } from "./types/errorCodes.enum";
 
 const app = express();
 const httpServer = createServer(app);
@@ -50,6 +53,11 @@ app.get(
 );
 app.get("/api/boards/:boardId/tasks", authMiddleware, tasksController.getTasks);
 app.post("/api/boards", authMiddleware, boardsController.createBoard);
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new CustomError("Not Found", ErrorCodes.notFound, 404);
+  next(error);
+});
 
 io.use(async (socket: Socket, next) => {
   try {
@@ -100,6 +108,8 @@ io.use(async (socket: Socket, next) => {
     tasksController.deleteTask(io, socket, data);
   });
 });
+
+app.use(errorMiddleware);
 
 mongoose.connect("mongodb://localhost:27017/taskmanager").then(() => {
   console.log("connected to mongodb");

@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { ErrorCodes } from "../types/errorCodes.enum";
+import { CustomError } from "../utils/CustomError";
 
 const normalizeUser = (user: UserDocument, includeToken: boolean = false) => {
   const token = jwt.sign({ id: user.id, email: user.email }, secret);
@@ -24,12 +25,14 @@ export const register = async (
 ) => {
   try {
     const existingUser = await UserModel.findOne({ email: req.body.email });
+
     if (existingUser) {
-      return res.status(409).json({
-        message: "User registration failed",
-        code: ErrorCodes.userAlreadyExists,
-        errors: ["Email already in use"],
-      });
+      throw new CustomError(
+        "User registration failed",
+        ErrorCodes.userAlreadyExists,
+        409,
+        ["Email is not available"],
+      );
     }
 
     const newUser = new UserModel({
@@ -37,18 +40,24 @@ export const register = async (
       username: req.body.username,
       password: req.body.password,
     });
+
     const savedUser = await newUser.save();
     return res.send(normalizeUser(savedUser, true));
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);
-      return res.status(422).json({
-        message: "Validation failed",
-        code: ErrorCodes.validationError,
-        errors: messages,
-      });
+
+      next(
+        new CustomError(
+          "Validation failed",
+          ErrorCodes.validationError,
+          422,
+          messages,
+        ),
+      );
+    } else {
+      next(err);
     }
-    next(err);
   }
 };
 
@@ -62,20 +71,21 @@ export const login = async (
       "+password",
     );
 
-    const invalidCredentialsErrorResponse = {
-      message: "Login failed",
-      code: ErrorCodes.incorrectCredentials,
-      errors: ["Incorrect email or password"],
-    };
+    const invalidCredentialsErrorResponse = new CustomError(
+      "Login failed",
+      ErrorCodes.incorrectCredentials,
+      422,
+      ["Incorrect email or password"],
+    );
 
     if (!user) {
-      return res.status(422).json(invalidCredentialsErrorResponse);
+      throw invalidCredentialsErrorResponse;
     }
 
     const isSamePassword = await user.validatePassword(req.body.password);
 
     if (!isSamePassword) {
-      res.status(422).json(invalidCredentialsErrorResponse);
+      throw invalidCredentialsErrorResponse;
     }
 
     res.send(normalizeUser(user, true));
@@ -86,7 +96,9 @@ export const login = async (
 
 export const currentUser = (req: ExpressRequestInterface, res: Response) => {
   if (!req.user) {
-    return res.sendStatus(401);
+    throw new CustomError("Unauthorized", ErrorCodes.unauthorized, 401, [
+      "User is not authenticated",
+    ]);
   }
   res.send(normalizeUser(req.user));
 };

@@ -98,26 +98,32 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     }
   }, [boardId]);
 
-  const createColumn = useCallback((title: string) => {
-    if (socket.current !== null) {
-      socket.current.emit(SocketEventsEnum.columnsCreate, {
-        boardId,
-        title,
-      });
-    }
-  }, []);
-
-  const updateColumn = useCallback((columnId: string, title: string) => {
-    if (socket.current !== null) {
-      socket.current.emit(SocketEventsEnum.columnsUpdate, {
-        boardId,
-        columnId,
-        fields: {
+  const createColumn = useCallback(
+    (title: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.columnsCreate, {
+          boardId,
           title,
-        },
-      });
-    }
-  }, []);
+        });
+      }
+    },
+    [boardId],
+  );
+
+  const updateColumn = useCallback(
+    (columnId: string, title: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.columnsUpdate, {
+          boardId,
+          columnId,
+          fields: {
+            title,
+          },
+        });
+      }
+    },
+    [boardId],
+  );
 
   const deleteColumn = useCallback(
     (columnId: string) => {
@@ -131,15 +137,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
     [boardId],
   );
 
-  const createTask = useCallback((columnId: string, title: string) => {
-    if (socket.current !== null) {
-      socket.current.emit(SocketEventsEnum.tasksCreate, {
-        boardId,
-        columnId,
-        title,
-      });
-    }
-  }, []);
+  const createTask = useCallback(
+    (columnId: string, title: string) => {
+      if (socket.current !== null) {
+        socket.current.emit(SocketEventsEnum.tasksCreate, {
+          boardId,
+          columnId,
+          title,
+        });
+      }
+    },
+    [boardId],
+  );
 
   const updateTask = useCallback(
     ({
@@ -161,7 +170,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         });
       }
     },
-    [],
+    [boardId],
   );
 
   const deleteTask = useCallback(
@@ -193,10 +202,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
 
       newSocket.on(SocketEventsEnum.boardsUpdateSuccess, (updatedBoardData) => {
         updateBoardContext(updatedBoardData);
-      });
-
-      newSocket.on(SocketEventsEnum.boardsUpdateSuccess, () => {
-        deleteBoardContext();
       });
 
       newSocket.on(SocketEventsEnum.boardsDeleteSuccess, () => {
@@ -242,7 +247,21 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         }
       };
     }
-  }, [boardId, token, updateBoardContext, joinBoard, leaveBoard]);
+  }, [
+    boardId,
+    token,
+    updateBoardContext,
+    joinBoard,
+    leaveBoard,
+    createColumnContext,
+    createTaskContext,
+    deleteBoardContext,
+    deleteColumnContext,
+    deleteTaskContext,
+    router,
+    updateColumnContext,
+    updateTaskContext,
+  ]);
 
   const value = useMemo(
     () => ({

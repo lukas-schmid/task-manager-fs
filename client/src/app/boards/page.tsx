@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getBoards } from "@/actions/boards";
 import { Board } from "@/components/board";
 import { CreateBoard } from "@/components/create-board";

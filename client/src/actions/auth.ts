@@ -44,7 +44,7 @@ export async function register(
         case ErrorCodes.validationError:
           return {
             apiErrors: {
-              messages: errorData.errors,
+              messages: errorData.details,
             },
           };
         default:
@@ -100,7 +100,7 @@ export async function login(
         case ErrorCodes.incorrectCredentials:
           return {
             apiErrors: {
-              messages: errorData.errors,
+              messages: errorData.details,
             },
           };
         default:

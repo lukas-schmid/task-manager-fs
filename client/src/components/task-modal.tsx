@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/button";
-import { CircleX, Pencil, Trash2 } from "lucide-react";
+import { CircleX, Pencil } from "lucide-react";
 import { useTasks } from "@/context/tasksProvider";
 import { useSocket } from "@/context/SocketProvider";
 import { InlineFormInput } from "@/components/inline-form-input";
@@ -60,12 +60,10 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     (payload: FormData) => {
       if (currentTask) {
         const title = payload.get("title") as string;
-        const description = payload.get("description") as string;
         updateTask({
           taskId: currentTask.id,
           fields: {
             title,
-            description,
           },
         });
         setIsEditingTitle(false);
@@ -94,7 +92,7 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     if (!currentTask) {
       onClose();
     }
-  }, []);
+  }, [currentTask, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -104,20 +102,25 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     }
   }, [isOpen]);
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (dialogRef.current && e.target === dialogRef.current) {
-      onClose();
-    }
-  };
+  const handleOutsideClick = useCallback(
+    (e: MouseEvent) => {
+      if (dialogRef.current && e.target === dialogRef.current) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
 
   useEffect(() => {
-    if (dialogRef.current) {
-      dialogRef.current.addEventListener("click", handleOutsideClick);
+    const dialog = dialogRef.current;
+
+    if (dialog) {
+      dialog.addEventListener("click", handleOutsideClick);
     }
     return () => {
-      dialogRef.current?.removeEventListener("click", handleOutsideClick);
+      dialog?.removeEventListener("click", handleOutsideClick);
     };
-  }, []);
+  }, [handleOutsideClick]);
 
   if (!currentTask) {
     return null;
@@ -160,7 +163,7 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
                 className="flex items-center gap-2"
               >
                 <Pencil size={10} />
-                <p>
+                <p className="whitespace-pre">
                   {currentTask.description ?? (
                     <span className="text-gray-500">
                       Add more detailed description
@@ -182,13 +185,17 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end items-center gap-3">
-        <Button
-          className="text-sm bg-transparent text-red-600 hover:Text-red-500 hover:bg-transparent hover:font-semibold"
-          onClick={openDialog}
-        >
-          Delete Task
-        </Button>
+      <div
+        className={`flex justify-${!isEditingDescription ? "between" : "end"} items-center gap-3`}
+      >
+        {!isEditingDescription && (
+          <Button
+            className="text-sm bg-transparent text-red-600 hover:Text-red-500 hover:bg-transparent hover:font-semibold"
+            onClick={openDialog}
+          >
+            Delete Task
+          </Button>
+        )}
         <Button className="text-sm text-white" onClick={onClose}>
           Close
         </Button>

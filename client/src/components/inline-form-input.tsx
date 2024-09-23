@@ -22,7 +22,7 @@ export const InlineFormInput = ({
 
   const handleBlur = useCallback(() => {
     setIsEditing(false);
-  }, []);
+  }, [setIsEditing]);
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -31,20 +31,20 @@ export const InlineFormInput = ({
   }, [isEditing]);
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full">
       {isEditing ? (
-        <form action={action} className="inline-block">
+        <form action={action} className="w-full inline-block">
           <input
             name={name}
             ref={inputRef}
             type="text"
-            className="px-1 py-2 bg-card border-none"
+            className="w-full px-1 py-2 bg-card border-none"
             onBlur={handleBlur}
             {...rest}
           />
         </form>
       ) : (
-        <p>{text}</p>
+        <p className="truncate overflow-hidden">{text}</p>
       )}
     </div>
   );

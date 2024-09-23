@@ -3,4 +3,5 @@ export enum ErrorCodes {
   validationError = "VALIDATION_ERROR",
   incorrectCredentials = "INCORRECT_CREDENTIALS",
   unauthorized = "UNAUTHORIZED",
+  notFound = "NOT_FOUND",
 }

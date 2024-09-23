@@ -4,7 +4,7 @@ import { Column as ColumnInterface } from "@/types/column.interface";
 import { Task } from "@/types/task.interface";
 import { Board } from "@/types/board.interface";
 import { BoardContent } from "@/components/board-content";
-import { ArrowLeft, LogOut } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { BoardHeaderTitle } from "@/components/board-header-title";
 import { BoardProvider } from "@/context/BoardProvider";
 import { ColumnsProvider } from "@/context/ColumnsProvider";

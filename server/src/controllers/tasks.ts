@@ -5,6 +5,8 @@ import { Server } from "socket.io";
 import { Socket } from "../types/socket.interface";
 import { SocketEventsEnum } from "../types/socketEvents.enum";
 import { getErrorMessage } from "../helpers";
+import { CustomError } from "../utils/CustomError";
+import { ErrorCodes } from "../types/errorCodes.enum";
 
 export const getTasks = async (
   req: ExpressRequestInterface,
@@ -13,10 +15,14 @@ export const getTasks = async (
 ) => {
   try {
     if (!req.user) {
-      return res.sendStatus(401);
+      throw new CustomError(
+        "Unauthorized access",
+        ErrorCodes.unauthorized,
+        401,
+      );
     }
+
     const tasks = await TaskModel.find({ boardId: req.params.boardId });
-    console.log(tasks);
     res.send(tasks);
   } catch (err) {
     next(err);
@@ -40,15 +46,16 @@ export const createTask = async (
       );
       return;
     }
+
     const newTask = new TaskModel({
       title: data.title,
       boardId: data.boardId,
       userId: socket.user.id,
       columnId: data.columnId,
     });
+
     const savedTask = await newTask.save();
     io.to(data.boardId).emit(SocketEventsEnum.tasksCreateSuccess, savedTask);
-    console.log("savedTask", savedTask);
   } catch (err) {
     socket.emit(SocketEventsEnum.tasksCreateFailure, getErrorMessage(err));
   }
@@ -97,6 +104,7 @@ export const deleteTask = async (
       );
       return;
     }
+
     await TaskModel.deleteOne({ _id: data.taskId });
     io.to(data.boardId).emit(SocketEventsEnum.tasksDeleteSuccess, data.taskId);
   } catch (err) {

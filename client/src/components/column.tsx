@@ -39,7 +39,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
       updateColumn(column.id, title);
       setIsEditing(false);
     },
-    [updateColumn],
+    [updateColumn, column],
   );
 
   const handleClick = useCallback(() => {
@@ -54,7 +54,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
       >
         <CircleX size={15} />
       </Button>
-      <div className="p-3">
+      <div className="max-w-full p-3">
         <div onClick={handleClick} className="flex items-center gap-2">
           <InlineFormInput
             isEditing={isEditing}

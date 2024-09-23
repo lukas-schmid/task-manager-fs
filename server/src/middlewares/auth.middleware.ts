@@ -21,20 +21,29 @@ export default async (
         401,
       );
     }
-    const token = authHeader.split(" ")[1];
-    const data = jwt.verify(token, jwtSecret) as { id: string; email: string };
-    const user = await UserModel.findById(data.id);
 
-    if (!user) {
+    const token = authHeader.split(" ")[1];
+
+    try {
+      const data = jwt.verify(token, jwtSecret) as {
+        id: string;
+        email: string;
+      };
+      const user = await UserModel.findById(data.id);
+
+      if (!user) {
+        throw new CustomError("User not found", ErrorCodes.notFound, 404);
+      }
+
+      req.user = user;
+      next();
+    } catch (err) {
       throw new CustomError(
         "Unauthorized access",
         ErrorCodes.unauthorized,
         401,
       );
     }
-
-    req.user = user;
-    next();
   } catch (err) {
     next(err);
   }

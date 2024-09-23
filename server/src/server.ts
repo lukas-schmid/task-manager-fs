@@ -12,17 +12,16 @@ import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth.middleware";
 import cors from "cors";
 import { SocketEventsEnum } from "./types/socketEvents.enum";
-import { secret } from "./config";
 import User from "./models/user";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { CustomError } from "./utils/CustomError";
 import { ErrorCodes } from "./types/errorCodes.enum";
+import { secret } from "./config";
 import dotenv from "dotenv";
 dotenv.config();
 
 const mongoUri =
   process.env.MONGO_URI || "mongodb://localhost:27017/taskmanager";
-const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
 
 const app = express();
 const httpServer = createServer(app);
@@ -72,7 +71,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 io.use(async (socket: Socket, next) => {
   try {
     const token = (socket.handshake.auth.token as string) ?? "";
-    const data = jwt.verify(token.split(" ")[1], jwtSecret) as {
+    const data = jwt.verify(token.split(" ")[1], secret) as {
       id: string;
       email: string;
     };

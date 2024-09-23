@@ -43,8 +43,12 @@ mongoose.set("toJSON", {
   },
 });
 
-app.get("/", (req, res) => {
-  res.send("API is UP");
+app.get("/api/health", (req: Request, res: Response) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Service is running",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 app.post("/api/users", usersController.register);

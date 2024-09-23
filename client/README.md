@@ -14,3 +14,4 @@ TODO
 Bugs
 
 - double render and double join Borad?
+- Navbar content to long on mobile

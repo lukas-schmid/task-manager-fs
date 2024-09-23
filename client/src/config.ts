@@ -6,4 +6,4 @@ export const apiUrl =
 export const socketUrl =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4001"
-    : process.env.SOCKET_URL;
+    : process.env.NEXT_PUBLIC_SOCKET_URL;

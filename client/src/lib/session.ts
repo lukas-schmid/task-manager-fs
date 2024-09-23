@@ -52,6 +52,6 @@ export async function getSession() {
   return decryptSession("accessToken");
 }
 
-export async function deleteSession() {
+export function deleteSession() {
   return cookies().delete("accessToken");
 }

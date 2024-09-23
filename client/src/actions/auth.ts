@@ -128,6 +128,6 @@ export async function login(
 }
 
 export async function logout() {
-  await deleteSession();
+  deleteSession();
   redirect("/");
 }

@@ -12,7 +12,7 @@ export default async function Boards() {
           <LogoutButton />
         </div>
       </nav>
-      <main className="pt-20 pb-10 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <main className="max-w-7xl mx-auto pt-20 pb-10 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <CreateBoard />
         {boards &&
           boards.map((board) => <Board key={board.id} board={board} />)}

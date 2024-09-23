@@ -10,5 +10,5 @@ TODO
 Bugs
 
 - double render and double join Board?
-- Navbar content to long on mobile
+- Navbar content to long on mobile (party fixed. maybe move it to next line with search input?)
 - logout not working

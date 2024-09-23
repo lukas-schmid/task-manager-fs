@@ -6,10 +6,12 @@ export default function Home() {
     <div>
       <nav className="flex items-center justify-end h-16 px-4 gap-3 bg-muted">
         <Link href="/login">
-          <Button className="h-8 bg-transparent">Login</Button>
+          <Button className="h-8 bg-transparent hover:bg-transparent hover:font-semibold">
+            Login
+          </Button>
         </Link>
         <Link href="/register">
-          <Button className="h-8">Register</Button>
+          <Button className="h-8 bg-primary">Register</Button>
         </Link>
       </nav>
       <main className="p-2">Some blog articles with images</main>

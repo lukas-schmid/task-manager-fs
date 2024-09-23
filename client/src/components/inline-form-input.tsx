@@ -33,7 +33,7 @@ export const InlineFormInput = ({
   return (
     <div className="w-full">
       {isEditing ? (
-        <form action={action} className="w-full inline-block">
+        <form action={action} className="w-full">
           <input
             name={name}
             ref={inputRef}
@@ -44,7 +44,9 @@ export const InlineFormInput = ({
           />
         </form>
       ) : (
-        <p className="truncate overflow-hidden">{text}</p>
+        <div>
+          <p className="truncate overflow-hidden">{text}</p>
+        </div>
       )}
     </div>
   );

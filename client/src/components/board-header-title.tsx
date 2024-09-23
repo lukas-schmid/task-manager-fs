@@ -48,7 +48,8 @@ export const BoardHeaderTitle = () => {
 
   return (
     <>
-      <div onClick={handleClick} className="flex items-center gap-2">
+      <div onClick={handleClick} className="w-full flex items-center gap-2">
+        {!isEditing && <Pencil size={10} />}
         <InlineFormInput
           isEditing={isEditing}
           name="title"
@@ -57,8 +58,6 @@ export const BoardHeaderTitle = () => {
           text={board.title}
           defaultValue={board.title}
         />
-
-        {!isEditing && <Pencil size={10} />}
       </div>
       {!isEditing && (
         <Button

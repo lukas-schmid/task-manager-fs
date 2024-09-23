@@ -20,13 +20,14 @@ import { errorMiddleware } from "./middlewares/error.middleware";
 import { CustomError } from "./utils/CustomError";
 import { ErrorCodes } from "./types/errorCodes.enum";
 
-import { jwtSecret, mongoUri, port } from "./config";
+import { clientUrl, jwtSecret, mongoUri, port } from "./config";
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: clientUrl,
+    credentials: true,
   },
 });
 

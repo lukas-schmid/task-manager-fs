@@ -11,3 +11,8 @@ export const backendUrl =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4001/api"
     : process.env.BACKEND_URL;
+
+export const clientUrl =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : process.env.CLIENT_URL;

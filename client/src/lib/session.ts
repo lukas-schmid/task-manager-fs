@@ -43,7 +43,7 @@ export async function createSession(sessionPayload: SessionPayload) {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: "lax",
+    sameSite: "none",
     path: "/",
   });
 }

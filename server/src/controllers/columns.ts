@@ -50,12 +50,16 @@ export const createColumn = async (
     });
 
     const savedColumn = await newColumn.save();
+
     io.to(data.boardId).emit(
       SocketEventsEnum.columnsCreateSuccess,
       savedColumn,
     );
   } catch (err) {
-    socket.emit(SocketEventsEnum.columnsCreateFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.columnsCreateFailure,
+      getErrorMessage(socket.user?.id, "Failed to create Column", err),
+    );
   }
 };
 
@@ -84,7 +88,10 @@ export const updateColumn = async (
       updatedColumn,
     );
   } catch (err) {
-    socket.emit(SocketEventsEnum.columnsUpdateFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.columnsUpdateFailure,
+      getErrorMessage(socket.user?.id, "Failed to update column", err),
+    );
   }
 };
 
@@ -103,11 +110,15 @@ export const deleteColumn = async (
     }
 
     await ColumnModel.deleteOne({ _id: data.columnId });
+
     io.to(data.boardId).emit(
       SocketEventsEnum.columnsDeleteSuccess,
       data.columnId,
     );
   } catch (err) {
-    socket.emit(SocketEventsEnum.columnsDeleteFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.columnsDeleteFailure,
+      getErrorMessage(socket.user?.id, "Failed to delete column", err),
+    );
   }
 };

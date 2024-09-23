@@ -23,6 +23,7 @@ export const getTasks = async (
     }
 
     const tasks = await TaskModel.find({ boardId: req.params.boardId });
+
     res.send(tasks);
   } catch (err) {
     next(err);
@@ -55,9 +56,13 @@ export const createTask = async (
     });
 
     const savedTask = await newTask.save();
+
     io.to(data.boardId).emit(SocketEventsEnum.tasksCreateSuccess, savedTask);
   } catch (err) {
-    socket.emit(SocketEventsEnum.tasksCreateFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.tasksCreateFailure,
+      getErrorMessage(socket.user?.id, "Failed to create task", err),
+    );
   }
 };
 
@@ -87,7 +92,10 @@ export const updateTask = async (
 
     io.to(data.boardId).emit(SocketEventsEnum.tasksUpdateSuccess, updatedTask);
   } catch (err) {
-    socket.emit(SocketEventsEnum.tasksUpdateFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.tasksUpdateFailure,
+      getErrorMessage(socket.user?.id, "Failed to update task", err),
+    );
   }
 };
 
@@ -106,8 +114,12 @@ export const deleteTask = async (
     }
 
     await TaskModel.deleteOne({ _id: data.taskId });
+
     io.to(data.boardId).emit(SocketEventsEnum.tasksDeleteSuccess, data.taskId);
   } catch (err) {
-    socket.emit(SocketEventsEnum.tasksDeleteFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.tasksDeleteFailure,
+      getErrorMessage(socket.user?.id, "Failed to delete task", err),
+    );
   }
 };

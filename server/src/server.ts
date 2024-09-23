@@ -22,7 +22,7 @@ import { ErrorCodes } from "./types/errorCodes.enum";
 
 import { jwtSecret, mongoUri, port } from "./config";
 
-const origin = [process.env.CLIENT_URL, "http/localhost:3000"].filter(
+const origin = [process.env.CLIENT_URL, "http//localhost:3000"].filter(
   Boolean,
 ) as string[];
 
@@ -30,8 +30,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin,
-    credentials: true,
+    origin: "*",
   },
 });
 

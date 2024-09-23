@@ -114,14 +114,15 @@ export const updateBoard = async (
       { new: true },
     );
 
-    console.log(updatedBoard);
-
     io.to(data.boardId).emit(
       SocketEventsEnum.boardsUpdateSuccess,
       updatedBoard,
     );
   } catch (err) {
-    socket.emit(SocketEventsEnum.boardsUpdateFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.boardsUpdateFailure,
+      getErrorMessage(socket.user?.id, "Failed to update board", err),
+    );
   }
 };
 
@@ -141,6 +142,9 @@ export const deleteBoard = async (
     await BoardModel.deleteOne({ _id: data.boardId });
     io.to(data.boardId).emit(SocketEventsEnum.boardsDeleteSuccess);
   } catch (err) {
-    socket.emit(SocketEventsEnum.boardsDeleteFailure, getErrorMessage(err));
+    socket.emit(
+      SocketEventsEnum.boardsDeleteFailure,
+      getErrorMessage(socket.user?.id, "Failed to delete board", err),
+    );
   }
 };

@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useColumns } from "./ColumnsProvider";
 import { useTasks } from "./tasksProvider";
 import { socketUrl } from "@/config";
+import toast from "react-hot-toast";
+import { SocketError } from "@/types/socket.interface";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -205,9 +207,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         updateBoardContext(updatedBoardData);
       });
 
+      newSocket.on(SocketEventsEnum.boardsUpdateFailure, (err: SocketError) => {
+        toast.error(err.message);
+      });
+
       newSocket.on(SocketEventsEnum.boardsDeleteSuccess, () => {
         deleteBoardContext();
         router.push("/boards");
+      });
+
+      newSocket.on(SocketEventsEnum.boardsDeleteFailure, (err: SocketError) => {
+        toast.error(err.message);
       });
 
       newSocket.on(
@@ -218,9 +228,23 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       );
 
       newSocket.on(
+        SocketEventsEnum.columnsCreateFailure,
+        (err: SocketError) => {
+          toast.error(err.message);
+        },
+      );
+
+      newSocket.on(
         SocketEventsEnum.columnsUpdateSuccess,
         (updatedColumnData) => {
           updateColumnContext(updatedColumnData);
+        },
+      );
+
+      newSocket.on(
+        SocketEventsEnum.columnsUpdateFailure,
+        (err: SocketError) => {
+          toast.error(err.message);
         },
       );
 
@@ -228,16 +252,35 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         deleteColumnContext(columnId);
       });
 
+      newSocket.on(
+        SocketEventsEnum.columnsDeleteFailure,
+        (err: SocketError) => {
+          toast.error(err.message);
+        },
+      );
+
       newSocket.on(SocketEventsEnum.tasksCreateSuccess, (createdTaskData) => {
         createTaskContext(createdTaskData);
+      });
+
+      newSocket.on(SocketEventsEnum.tasksCreateFailure, (err: SocketError) => {
+        toast.error(err.message);
       });
 
       newSocket.on(SocketEventsEnum.tasksUpdateSuccess, (updatedTaskData) => {
         updateTaskContext(updatedTaskData);
       });
 
+      newSocket.on(SocketEventsEnum.tasksUpdateFailure, (err: SocketError) => {
+        toast.error(err.message);
+      });
+
       newSocket.on(SocketEventsEnum.tasksDeleteSuccess, (taskId) => {
         deleteTaskContext(taskId);
+      });
+
+      newSocket.on(SocketEventsEnum.tasksDeleteFailure, (err: SocketError) => {
+        toast.error(err.message);
       });
 
       return () => {

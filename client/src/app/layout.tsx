@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import type { Viewport } from "next";
+import { Toaster } from "react-hot-toast";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -40,7 +41,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserProvider user={user}>{children}</UserProvider>
+        <>
+          <UserProvider user={user}>{children}</UserProvider>
+          <Toaster />
+        </>
       </body>
     </html>
   );

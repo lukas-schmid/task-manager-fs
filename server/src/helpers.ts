@@ -1,3 +1,15 @@
-export const getErrorMessage = (err: unknown): string => {
-  return err instanceof Error ? err.message : String(err);
+import { SocketError } from "./types/socket.interface";
+
+export const getErrorMessage = (
+  userId: string,
+  message: string,
+  err: unknown,
+): SocketError => {
+  const cause = err instanceof Error ? err : String(err);
+
+  return {
+    message,
+    userId,
+    cause,
+  };
 };

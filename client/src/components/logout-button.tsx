@@ -1,13 +1,19 @@
+"use client";
+
 import { LogOut } from "lucide-react";
-import Link from "next/link";
+import { Button } from "./button";
+import { logout } from "@/actions/auth";
 
 export const LogoutButton = () => {
   return (
-    <Link href="/logout">
+    <Button
+      className="bg-transparent hover:bg-transparent"
+      onClick={() => logout()}
+    >
       <div className="flex gap-2">
         <LogOut />
         <span>Logout</span>
       </div>
-    </Link>
+    </Button>
   );
 };

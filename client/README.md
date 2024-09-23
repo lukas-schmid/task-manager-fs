@@ -9,10 +9,11 @@ TODO
 - test mobile
 - make READ me in root
 - (optional) make filter boards and tasks
-- change hardcoded localhost endpoints to env. variables
 - startpage before login
+- redirect to link when login is required before. after login, redirect
 
 Bugs
 
-- double render and double join Borad?
+- double render and double join Board?
 - Navbar content to long on mobile
+- logout not working

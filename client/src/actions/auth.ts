@@ -5,6 +5,7 @@ import { ErrorCodes } from "@/types/errorCodes.enum";
 import { AuthError, AuthSuccess } from "@/types/auth.interface";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { apiUrl } from "@/config";
 
 export async function register(
   state: FormAuthState,
@@ -25,7 +26,7 @@ export async function register(
   const { username, password, email } = validatedFields.data;
 
   try {
-    const response = await fetch("http://localhost:4001/api/users", {
+    const response = await fetch(`${apiUrl}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +84,7 @@ export async function login(
   const { password, email } = formFields;
 
   try {
-    const response = await fetch("http://localhost:4001/api/users/login", {
+    const response = await fetch(`${apiUrl}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

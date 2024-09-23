@@ -14,6 +14,7 @@ import { useBoard } from "@/context/BoardProvider";
 import { useRouter } from "next/navigation";
 import { useColumns } from "./ColumnsProvider";
 import { useTasks } from "./tasksProvider";
+import { socketUrl } from "@/config";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -187,7 +188,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
 
   useEffect(() => {
     if (boardId) {
-      const newSocket = io("http://localhost:4001", {
+      const newSocket = io(socketUrl, {
         auth: { token },
       });
 

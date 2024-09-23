@@ -44,7 +44,7 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
       router.push("/boards");
       router.refresh();
     }
-  }, [board]);
+  }, [board, router]);
 
   const value = useMemo(
     () => ({

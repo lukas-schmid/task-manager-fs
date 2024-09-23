@@ -1,5 +1,6 @@
 "use server";
 
+import { apiUrl } from "@/config";
 import { getSession } from "@/lib/session";
 import { Task } from "@/types/task.interface";
 
@@ -11,15 +12,12 @@ export async function getTasks(boardId: string): Promise<Task[] | null> {
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:4001/api/boards/${boardId}/tasks`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: session.token,
-        },
+    const response = await fetch(`${apiUrl}/boards/${boardId}/tasks`, {
+      method: "GET",
+      headers: {
+        Authorization: session.token,
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

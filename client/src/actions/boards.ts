@@ -4,6 +4,7 @@ import { getSession } from "@/lib/session";
 import { Board } from "@/types/board.interface";
 import { FormBoardState } from "@/lib/definitions";
 import { revalidatePath } from "next/cache";
+import { apiUrl } from "@/config";
 
 export async function getBoards(): Promise<Board[] | null> {
   const session = await getSession();
@@ -13,7 +14,7 @@ export async function getBoards(): Promise<Board[] | null> {
   }
 
   try {
-    const response = await fetch("http://localhost:4001/api/boards", {
+    const response = await fetch(`${apiUrl}/boards`, {
       method: "GET",
       headers: {
         Authorization: session.token,
@@ -41,15 +42,12 @@ export async function getBoard(boardId: string): Promise<Board | null> {
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:4001/api/boards/${boardId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: session.token,
-        },
+    const response = await fetch(`${apiUrl}/boards/${boardId}`, {
+      method: "GET",
+      headers: {
+        Authorization: session.token,
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -79,7 +77,7 @@ export async function createBoard(
   const title = formData.get("title");
 
   try {
-    const response = await fetch("http://localhost:4001/api/boards", {
+    const response = await fetch(`${apiUrl}/boards`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

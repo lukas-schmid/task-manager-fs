@@ -1,5 +1,6 @@
 "use server";
 
+import { apiUrl } from "@/config";
 import { getSession } from "@/lib/session";
 
 export async function getUser() {
@@ -10,7 +11,7 @@ export async function getUser() {
   }
 
   try {
-    const response = await fetch("http://localhost:4001/api/user", {
+    const response = await fetch(`${apiUrl}/user`, {
       method: "GET",
       headers: {
         Authorization: session.token,

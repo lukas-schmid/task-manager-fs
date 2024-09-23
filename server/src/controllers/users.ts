@@ -3,13 +3,13 @@ import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
 import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
-import { secret } from "../config";
+import { jwtSecret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import { ErrorCodes } from "../types/errorCodes.enum";
 import { CustomError } from "../utils/CustomError";
 
 const normalizeUser = (user: UserDocument, includeToken: boolean = false) => {
-  const token = jwt.sign({ id: user.id, email: user.email }, secret);
+  const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret);
   return {
     email: user.email,
     username: user.username,

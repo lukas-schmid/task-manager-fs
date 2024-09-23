@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, { Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -16,12 +19,8 @@ import User from "./models/user";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { CustomError } from "./utils/CustomError";
 import { ErrorCodes } from "./types/errorCodes.enum";
-import { secret } from "./config";
-import dotenv from "dotenv";
-dotenv.config();
 
-const mongoUri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/taskmanager";
+import { jwtSecret, mongoUri, port } from "./config";
 
 const app = express();
 const httpServer = createServer(app);
@@ -71,7 +70,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 io.use(async (socket: Socket, next) => {
   try {
     const token = (socket.handshake.auth.token as string) ?? "";
-    const data = jwt.verify(token.split(" ")[1], secret) as {
+    const data = jwt.verify(token.split(" ")[1], jwtSecret) as {
       id: string;
       email: string;
     };
@@ -122,7 +121,7 @@ app.use(errorMiddleware);
 
 mongoose.connect(mongoUri).then(() => {
   console.log("connected to MongoDB");
-  httpServer.listen(process.env.PORT || 4001, () => {
-    console.log(`API is listening on port ${process.env.PORT || 4001}`);
+  httpServer.listen(port, () => {
+    console.log(`API is listening on port ${port}`);
   });
 });

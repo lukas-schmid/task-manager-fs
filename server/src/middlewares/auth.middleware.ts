@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import { secret } from "../config";
+import { jwtSecret } from "../config";
 import UserModel from "../models/user";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 
@@ -16,7 +16,7 @@ export default async (
       return res.sendStatus(401);
     }
     const token = authHeader.split(" ")[1];
-    const data = jwt.verify(token, secret) as { id: string; email: string };
+    const data = jwt.verify(token, jwtSecret) as { id: string; email: string };
     const user = await UserModel.findById(data.id);
 
     if (!user) {

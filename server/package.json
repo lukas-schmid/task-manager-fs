@@ -4,9 +4,11 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "npm run build && node dist/server.js",
+    "start": "npm run build && NODE_ENV=production node dist/server.js",
     "build": "npx tsc",
-    "dev": "nodemon src/server.ts"
+    "dev": "NODE_ENV=development && ./start-local-db.sh && nodemon src/server.ts",
+    "start-local-db": "./start-local-db.sh",
+    "start-db-shell": "./start-db-shell.sh"
   },
   "author": "",
   "license": "ISC",

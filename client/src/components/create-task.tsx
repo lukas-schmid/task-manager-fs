@@ -20,7 +20,6 @@ export const CreateTask = ({ columnId }: CreateTaskProps) => {
 
   const handleCreateTask = useCallback(
     (payload: FormData) => {
-      console.log(payload);
       const title = payload.get("title") as string;
       createTask(columnId, title);
       setIsEditing(false);

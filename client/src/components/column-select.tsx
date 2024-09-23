@@ -10,7 +10,6 @@ interface ColumnSelectProps {
 }
 
 export const ColumnSelect = ({ currentTask }: ColumnSelectProps) => {
-  console.log(currentTask);
   const { columns } = useColumns();
   const { updateTask } = useSocket();
 

@@ -10,8 +10,6 @@ import { CircleAlert } from "lucide-react";
 export function RegisterForm() {
   const [state, action] = useFormState(register, undefined);
 
-  console.log(state);
-
   return (
     <form className="flex flex-col gap-4" action={action}>
       <div className="flex flex-col gap-2">

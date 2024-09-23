@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/button";
-import { CircleX, Pencil, Trash2 } from "lucide-react";
+import { CircleX, Pencil } from "lucide-react";
 import { useTasks } from "@/context/tasksProvider";
 import { useSocket } from "@/context/SocketProvider";
 import { InlineFormInput } from "@/components/inline-form-input";
@@ -94,7 +94,7 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     if (!currentTask) {
       onClose();
     }
-  }, []);
+  }, [currentTask, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -104,20 +104,25 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
     }
   }, [isOpen]);
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (dialogRef.current && e.target === dialogRef.current) {
-      onClose();
-    }
-  };
+  const handleOutsideClick = useCallback(
+    (e: MouseEvent) => {
+      if (dialogRef.current && e.target === dialogRef.current) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
 
   useEffect(() => {
-    if (dialogRef.current) {
-      dialogRef.current.addEventListener("click", handleOutsideClick);
+    const dialog = dialogRef.current;
+
+    if (dialog) {
+      dialog.addEventListener("click", handleOutsideClick);
     }
     return () => {
-      dialogRef.current?.removeEventListener("click", handleOutsideClick);
+      dialog?.removeEventListener("click", handleOutsideClick);
     };
-  }, []);
+  }, [handleOutsideClick]);
 
   if (!currentTask) {
     return null;

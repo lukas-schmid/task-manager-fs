@@ -31,8 +31,8 @@ export const BoardProvider: React.FC<BoardProviderProps> = ({
   const router = useRouter();
   const [board, setBoard] = useState<Board | null>(initialBoard);
 
-  const updateBoard = useCallback((board: Board) => {
-    setBoard(board);
+  const updateBoard = useCallback(async (updatedBoard: Board) => {
+    setBoard(updatedBoard);
   }, []);
 
   const deleteBoard = useCallback(() => {

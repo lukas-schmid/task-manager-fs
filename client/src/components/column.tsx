@@ -39,7 +39,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
       updateColumn(column.id, title);
       setIsEditing(false);
     },
-    [updateColumn],
+    [updateColumn, column],
   );
 
   const handleClick = useCallback(() => {

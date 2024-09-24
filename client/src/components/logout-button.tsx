@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOut } from "lucide-react";
-import { Button } from "./button";
+import { Button } from "@/components/button";
 import { logout } from "@/actions/auth";
 import useBreakpoint from "@/hooks/use-breakpoint";
 

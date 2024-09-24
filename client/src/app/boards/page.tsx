@@ -8,7 +8,8 @@ export default async function Boards() {
   return (
     <>
       <nav className="h-16 w-full gap-3 bg-muted z-50 fixed">
-        <div className="flex items-center justify-end h-full px-4">
+        <div className="flex items-center justify-between h-full px-4">
+          <h2 className="font-bold text-xl text-gradient-blue">My Boards</h2>
           <LogoutButton />
         </div>
       </nav>

@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/button";
-import { CircleX, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useTasks } from "@/context/tasksProvider";
 import { useSocket } from "@/context/SocketProvider";
 import { InlineFormInput } from "@/components/inline-form-input";
 import { InlineFormTextarea } from "@/components/inline-form-textarea";
-import { ColumnSelect } from "./column-select";
-import Dialog from "./dialog";
+import { ColumnSelect } from "@/components/column-select";
+import Dialog from "@/components/dialog";
 import { useRouter, usePathname } from "next/navigation";
 
 interface TaskModalProps {
@@ -131,13 +131,6 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
       ref={dialogRef}
       className="rounded-lg bg-secondary p-6 shadow-lg max-w-lg w-full relative text-card-foreground border"
     >
-      <Button
-        className="p-0 absolute top-3 right-3 bg-transparent hover:bg-transparent"
-        onClick={onClose}
-      >
-        <CircleX size={16} />
-      </Button>
-
       <div className="flex flex-col gap-5 mb-6">
         <ColumnSelect currentTask={currentTask} />
         <div onClick={handleTitleClick} className="flex items-center gap-2">

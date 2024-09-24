@@ -47,7 +47,7 @@ export const Column = ({ column, tasks }: ColumnProps) => {
   }, []);
 
   return (
-    <div className="flex justify-start items-center relative flex-col h-full min-w-60 max-w-60 bg-secondary rounded">
+    <div className="flex justify-start items-center relative flex-col h-full min-w-60 max-w-60 bg-secondary/80 rounded">
       <Button
         className="h-5 w-5 p-0 absolute right-0 top-0 bg-transparent hover:bg-transparent"
         onClick={openDialog}

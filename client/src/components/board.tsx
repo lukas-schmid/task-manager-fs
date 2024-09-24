@@ -13,7 +13,7 @@ export const Board = ({ board }: BoardProps) => {
     <>
       <div className="relative min-h-52">
         <Link href={`/boards/${board.id}`}>
-          <Card className="h-full flex justify-center items-center">
+          <Card className="h-full flex justify-center items-center hover:bg-card/80">
             <p className="text-center">{board.title}</p>
           </Card>
         </Link>

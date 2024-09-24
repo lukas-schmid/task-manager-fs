@@ -32,6 +32,9 @@ const config: Config = {
         "destructive-foreground": mix("--destructive-foreground"),
         ring: mix("--ring"),
       },
+      background: {
+        gradient: "var(--gradient)",
+      },
     },
   },
   plugins: [],

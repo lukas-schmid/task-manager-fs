@@ -27,7 +27,7 @@ export const BoardContent = ({ taskIdSearchParam }: BoardContentProps) => {
   };
 
   return (
-    <main className="h-full pt-20 p-3 bg-primary overflow-x-auto">
+    <main className="h-full pt-20 p-3 bg-gradient-blue overflow-x-auto">
       <div className="h-full flex flex-row gap-3 overflow-x-auto">
         {columns &&
           columns.map((column) => (

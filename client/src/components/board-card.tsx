@@ -1,20 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { Board as BoardInterface } from "@/types/board.interface";
+import { Board } from "@/types/board.interface";
 import { Card } from "@/components/card";
 
-interface BoardProps {
-  board: BoardInterface;
+interface BoardCardProps {
+  board: Board;
 }
 
-export const Board = ({ board }: BoardProps) => {
+export const BoardCard = ({ board }: BoardCardProps) => {
   return (
     <>
       <div className="relative min-h-52">
         <Link href={`/boards/${board.id}`}>
           <Card className="h-full flex justify-center items-center hover:bg-card/80">
-            <p className="text-center">{board.title}</p>
+            <p className="p-2 text-center break-words min-w-0">{board.title}</p>
           </Card>
         </Link>
       </div>

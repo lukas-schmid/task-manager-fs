@@ -1,5 +1,5 @@
 import { getBoards } from "@/actions/boards";
-import { Board } from "@/components/board";
+import { BoardCard } from "@/components/board-card";
 import { CreateBoard } from "@/components/create-board";
 import { LogoutButton } from "@/components/logout-button";
 
@@ -16,7 +16,7 @@ export default async function Boards() {
       <main className="max-w-7xl mx-auto pt-20 pb-10 px-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <CreateBoard />
         {boards &&
-          boards.map((board) => <Board key={board.id} board={board} />)}
+          boards.map((board) => <BoardCard key={board.id} board={board} />)}
       </main>
     </>
   );

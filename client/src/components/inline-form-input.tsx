@@ -44,9 +44,7 @@ export const InlineFormInput = ({
           />
         </form>
       ) : (
-        <div>
-          <p className="truncate overflow-hidden">{text}</p>
-        </div>
+        <p className="truncate overflow-hidden">{text}</p>
       )}
     </div>
   );

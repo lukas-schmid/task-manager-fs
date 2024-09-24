@@ -1,15 +1,34 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { BoardHeaderTitle } from "@/components/board-header-title";
 import { LogoutButton } from "@/components/logout-button";
 import useBreakpoint from "@/hooks/use-breakpoint";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
+import { useSocket } from "@/context/SocketProvider";
+import { useState } from "react";
+import Dialog from "@/components/dialog";
 
 export const BoardNavbar = () => {
   const breakpoint = useBreakpoint();
   const router = useRouter();
+  const { deleteBoard } = useSocket();
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const handleConfirm = () => {
+    deleteBoard();
+    setDialogOpen(false);
+  };
+
+  const handleCancel = () => {
+    setDialogOpen(false);
+  };
+
+  const openDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setDialogOpen(true);
+  };
 
   const handleClick = () => {
     router.push("/boards");
@@ -27,10 +46,23 @@ export const BoardNavbar = () => {
             <ArrowLeft />
             {breakpoint !== "default" && "Overview"}
           </Button>
+          <Button
+            onClick={openDialog}
+            className="flex justify-center items-center p-0 h-5 w-5 bg-red-600 hover:bg-red-500"
+          >
+            <Trash2 size={15} />
+          </Button>{" "}
           <BoardHeaderTitle />
         </div>
         <LogoutButton />
       </div>
+      <Dialog
+        title="Delete this board?"
+        message="Are you sure you want to delete this board including all its content?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        isOpen={isDialogOpen}
+      />
     </nav>
   );
 };

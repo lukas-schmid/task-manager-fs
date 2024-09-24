@@ -59,5 +59,17 @@ export async function getSession() {
 }
 
 export function deleteSession() {
-  return cookies().delete("accessToken");
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieDomain = isProduction
+    ? "task-manager-collab.onrender.com"
+    : "localhost";
+
+  return cookies().set("accessToken", "", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/",
+    domain: cookieDomain,
+    expires: new Date(0),
+  });
 }

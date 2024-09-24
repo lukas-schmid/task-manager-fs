@@ -156,7 +156,7 @@ export const TaskModal = ({ taskId, isOpen, onClose }: TaskModalProps) => {
                 className="flex items-center gap-2"
               >
                 <Pencil size={10} />
-                <p className="whitespace-pre-wrap">
+                <p className="whitespace-pre-wrap word-break">
                   {currentTask.description ?? (
                     <span className="text-gray-500">
                       Add more detailed description

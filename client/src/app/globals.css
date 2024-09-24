@@ -11,6 +11,10 @@
     color: transparent;
     background-clip: text;
   }
+
+  .word-break {
+    word-break: break-word;
+  }
 }
 
 :root {

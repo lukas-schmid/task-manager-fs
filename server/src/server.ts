@@ -131,7 +131,11 @@ app.use(errorMiddleware);
 
 mongoose.connect(mongoUri).then(() => {
   console.log("connected to MongoDB");
-  httpServer.listen(port, () => {
-    console.log(`API is listening on port ${port}`);
-  });
+  if (process.env.NODE_ENV !== "test") {
+    httpServer.listen(port, () => {
+      console.log(`API is listening on port ${port}`);
+    });
+  }
 });
+
+export default app;

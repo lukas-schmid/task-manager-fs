@@ -42,7 +42,7 @@ export const register = async (
     });
 
     const savedUser = await newUser.save();
-    return res.send(normalizeUser(savedUser, true));
+    return res.status(201).send(normalizeUser(savedUser, true));
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);

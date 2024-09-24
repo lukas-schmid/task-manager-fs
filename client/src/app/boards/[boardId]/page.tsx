@@ -1,7 +1,7 @@
 import { getBoard } from "@/actions/boards";
 import { getColumns } from "@/actions/columns";
 import { getTasks } from "@/actions/tasks";
-import { BoardPage } from "@/components/board-page";
+import { BoardPage } from "@/components/board/BoardPage";
 import { getSession } from "@/lib/session";
 
 interface BoardProps {

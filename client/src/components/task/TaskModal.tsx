@@ -1,14 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/common/Button";
 import { Pencil } from "lucide-react";
 import { useTasks } from "@/context/tasksProvider";
 import { useSocket } from "@/context/SocketProvider";
-import { InlineFormInput } from "@/components/inline-form-input";
-import { InlineFormTextarea } from "@/components/inline-form-textarea";
-import { ColumnSelect } from "@/components/column-select";
-import Dialog from "@/components/dialog";
+import { InlineFormInput } from "@/components/form/InlineFormInput";
+import { InlineFormTextarea } from "@/components/form/InlineFormTextarea";
+import { ColumnSelect } from "@/components/column/ColumnSelect";
+import Dialog from "@/components/common/Dialog";
 import { useRouter, usePathname } from "next/navigation";
 
 interface TaskModalProps {

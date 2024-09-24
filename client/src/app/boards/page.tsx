@@ -1,7 +1,7 @@
 import { getBoards } from "@/actions/boards";
-import { BoardCard } from "@/components/board-card";
-import { CreateBoard } from "@/components/create-board";
-import { LogoutButton } from "@/components/logout-button";
+import { BoardCard } from "@/components/board/BoardCard";
+import { CreateBoard } from "@/components/board/CreateBoard";
+import { LogoutButton } from "@/components/common/LogoutButton";
 
 export default async function Boards() {
   const boards = await getBoards();

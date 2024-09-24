@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/button";
+import { Button } from "@/components/common/Button";
 import Image from "next/image";
 import hero from "../public/images/hero.svg";
 import team from "../public/images/work-with-any-team.png";

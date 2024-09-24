@@ -1,14 +1,14 @@
 "use client";
 
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { BoardHeaderTitle } from "@/components/board-header-title";
-import { LogoutButton } from "@/components/logout-button";
+import { BoardHeaderTitle } from "@/components/board/BoardHeaderTitle";
+import { LogoutButton } from "@/components/common/LogoutButton";
 import useBreakpoint from "@/hooks/use-breakpoint";
-import { Button } from "./button";
+import { Button } from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 import { useSocket } from "@/context/SocketProvider";
 import { useState } from "react";
-import Dialog from "@/components/dialog";
+import Dialog from "@/components/common/Dialog";
 
 export const BoardNavbar = () => {
   const breakpoint = useBreakpoint();

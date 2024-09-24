@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Card } from "@/components/card";
+import { Card } from "@/components/common/Card";
 import { CirclePlus } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
-import { InlineFormInput } from "@/components/inline-form-input";
+import { InlineFormInput } from "@/components/form/InlineFormInput";
 
 export const CreateColumn = () => {
   const { createColumn } = useSocket();

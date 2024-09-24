@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Board } from "@/types/board.interface";
-import { Card } from "@/components/card";
+import { Card } from "@/components/common/Card";
 
 interface BoardCardProps {
   board: Board;

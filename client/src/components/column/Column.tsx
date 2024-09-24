@@ -1,13 +1,13 @@
 import { Column as ColumnInterface } from "@/types/column.interface";
 import { Task as TaskInterface } from "@/types/task.interface";
-import { Task } from "@/components/task";
+import { Task } from "@/components/task/Task";
 import { useCallback, useState } from "react";
 import { CircleX, Pencil } from "lucide-react";
 import { useSocket } from "@/context/SocketProvider";
-import { Button } from "@/components/button";
-import Dialog from "@/components/dialog";
-import { CreateTask } from "@/components/create-task";
-import { InlineFormInput } from "@/components/inline-form-input";
+import { Button } from "@/components/common/Button";
+import Dialog from "@/components/common/Dialog";
+import { CreateTask } from "@/components/task/CreateTask";
+import { InlineFormInput } from "@/components/form/InlineFormInput";
 
 interface ColumnProps {
   column: ColumnInterface;

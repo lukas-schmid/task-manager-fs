@@ -1,14 +1,14 @@
 "use client";
 
-import { login } from "@/actions/auth";
-import { Input } from "@/components/input";
-import { Button } from "@/components/button";
+import { register } from "@/actions/auth";
+import { Input } from "@/components/form/Input";
+import { Button } from "@/components/common/Button";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { CircleAlert } from "lucide-react";
 
-export function LoginForm() {
-  const [state, action] = useFormState(login, undefined);
+export function RegisterForm() {
+  const [state, action] = useFormState(register, undefined);
 
   return (
     <form className="flex flex-col gap-4" action={action}>
@@ -33,6 +33,15 @@ export function LoginForm() {
         name="email"
         label="Email"
         placeholder="Email"
+        error={state?.validationErrors?.email}
+      />
+      <Input
+        id="username"
+        type="text"
+        name="username"
+        label="Username"
+        placeholder="Username"
+        error={state?.validationErrors?.username}
       />
       <Input
         id="password"
@@ -40,10 +49,22 @@ export function LoginForm() {
         name="password"
         label="Password"
         placeholder="Password"
+        error={
+          state?.validationErrors?.password && (
+            <div>
+              <p className="text-red-600">Password must:</p>
+              <ul>
+                {state.validationErrors?.password.map((error) => (
+                  <li key={error}>- {error}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
       />
-      <Button type="submit">Sign in</Button>
-      <Link className="flex justify-center text-sm" href="/register">
-        Sign up for an account
+      <Button type="submit">Register</Button>
+      <Link className="flex justify-center text-sm" href="/login">
+        Sign in
       </Link>
     </form>
   );

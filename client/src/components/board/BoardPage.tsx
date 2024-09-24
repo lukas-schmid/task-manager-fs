@@ -2,11 +2,11 @@ import { SocketProvider } from "@/context/SocketProvider";
 import { Column as ColumnInterface } from "@/types/column.interface";
 import { Task } from "@/types/task.interface";
 import { Board } from "@/types/board.interface";
-import { BoardContent } from "@/components/board-content";
+import { BoardContent } from "@/components/board/BoardContent";
 import { BoardProvider } from "@/context/BoardProvider";
 import { ColumnsProvider } from "@/context/ColumnsProvider";
 import { TasksProvider } from "@/context/tasksProvider";
-import { BoardNavbar } from "@/components/board-navbar";
+import { BoardNavbar } from "@/components/board/BoardNavbar";
 
 interface BoardPageProps {
   board: Board | null;

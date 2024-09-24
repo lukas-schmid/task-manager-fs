@@ -1,11 +1,11 @@
 "use client";
 
 import { Task } from "@/types/task.interface";
-import { Column } from "@/components/column";
-import { CreateColumn } from "@/components/create-column";
+import { Column } from "@/components/column/Column";
+import { CreateColumn } from "@/components/column/CreateColumn";
 import { useColumns } from "@/context/ColumnsProvider";
 import { useTasks } from "@/context/tasksProvider";
-import { TaskModal } from "./task-modal";
+import { TaskModal } from "@/components/task/TaskModal";
 import { usePathname, useRouter } from "next/navigation";
 
 interface BoardContentProps {

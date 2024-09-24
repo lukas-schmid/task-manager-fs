@@ -1,5 +1,5 @@
 import { Task as TaskInterface } from "@/types/task.interface";
-import { Card } from "@/components/card";
+import { Card } from "@/components/common/Card";
 import Link from "next/link";
 
 interface TaskProps {

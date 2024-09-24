@@ -4,7 +4,7 @@ import { Pencil } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useBoard } from "@/context/BoardProvider";
 import { useSocket } from "@/context/SocketProvider";
-import { InlineFormInput } from "@/components/inline-form-input";
+import { InlineFormInput } from "@/components/form/InlineFormInput";
 
 export const BoardHeaderTitle = () => {
   const { board } = useBoard();

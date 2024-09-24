@@ -1,4 +1,4 @@
-import { Card } from "@/components/card";
+import { Card } from "@/components/common/Card";
 import Link from "next/link";
 
 const messages = [

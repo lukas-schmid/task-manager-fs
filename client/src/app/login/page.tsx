@@ -1,5 +1,5 @@
-import { Card } from "@/components/card";
-import { LoginForm } from "@/components/login-form";
+import { Card } from "@/components/common/Card";
+import { LoginForm } from "@/components/form/LoginForm";
 
 export default function Login() {
   return (

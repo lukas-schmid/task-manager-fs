@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Card } from "@/components/card";
+import { Card } from "@/components/common/Card";
 import { useFormState } from "react-dom";
 import { createBoard } from "@/actions/boards";
 import { CirclePlus } from "lucide-react";
-import { InlineFormInput } from "@/components/inline-form-input";
+import { InlineFormInput } from "@/components/form/InlineFormInput";
 
 export const CreateBoard = () => {
   const [state, action] = useFormState(createBoard, undefined);
